@@ -1,0 +1,11 @@
+﻿<Application x:Class="Sound_Level_Prediction_Program.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Sound_Level_Prediction_Program"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="MenuBackgroundColorBrush" Color="{x:Static SystemColors.ControlLightLightColor}"></SolidColorBrush>
+        <SolidColorBrush x:Key="MenuBorderColorBrush" Color="#FFCDC7C7"></SolidColorBrush>
+        <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656262"></SolidColorBrush>
+    </Application.Resources>
+</Application>
