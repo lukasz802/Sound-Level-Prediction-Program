@@ -8,18 +8,63 @@
         mc:Ignorable="d"
         x:Name="mainWindow"
         Title="Sound Level Prediction Program"
-        TextOptions.TextRenderingMode="ClearType"
-        RenderOptions.BitmapScalingMode="HighQuality" 
-        RenderOptions.ClearTypeHint="Enabled"
         MinHeight="500" MinWidth="800" Height="670" Width="1000">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="30"
+                                  CornerRadius="0"
+                                  GlassFrameThickness="0"
+                                  NonClientFrameEdges="None"
+                                  ResizeBorderThickness="5"
+                                  UseAeroCaptionButtons="False"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{StaticResource MenuBorderColorBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF7F7F7" Offset="0"/>
+                        <GradientStop Color="#FFF7F6F6" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Window">
+                        <Border TextOptions.TextRenderingMode="ClearType"
+                                RenderOptions.BitmapScalingMode="HighQuality" 
+                                RenderOptions.ClearTypeHint="Enabled" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <AdornerDecorator>
+                                <ContentPresenter/>
+                            </AdornerDecorator>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="WindowState" Value="Maximized">
+                    <Setter Property="Padding" Value="7,7.25,7,7.25"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Window.Resources>
         <Style x:Key="MainRadioButtonStyle" TargetType="RadioButton">
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0.5" Name="Panel">
-                            <StackPanel Name="ContentStackPanel" RenderOptions.EdgeMode="Aliased" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
+                        <Border BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}" VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Center" BorderThickness="0.5" Name="Panel">
+                            <StackPanel Name="ContentStackPanel" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
                                 <ContentPresenter VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   Content="{TemplateBinding Content}"
@@ -44,8 +89,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="Panel" BorderBrush="Transparent" BorderThickness="0.5" SnapsToDevicePixels="True">
-                            <StackPanel Name="ContentStackPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
+                        <Border Name="Panel" BorderBrush="Transparent" BorderThickness="0.5">
+                            <StackPanel Name="ContentStackPanel" VerticalAlignment="Center" 
+                                        HorizontalAlignment="Center" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
                                 <ContentPresenter VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   Content="{TemplateBinding Content}"/>
@@ -79,8 +125,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="Panel" BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}" BorderThickness="0.5" SnapsToDevicePixels="True">
-                            <StackPanel Name="ContentStackPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="White">
+                        <Border Name="Panel" BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                BorderThickness="0.5" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
+                            <StackPanel Name="ContentStackPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <ContentPresenter VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   Content="{TemplateBinding Content}"/>
@@ -88,7 +135,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ContentStackPanel" Property="Background">
+                                <Setter TargetName="Panel" Property="Background">
                                     <Setter.Value>
                                         <SolidColorBrush Color="#FF11A6F3"
                                                          Opacity="0.15"/>
@@ -97,13 +144,16 @@
                                 <Setter TargetName="Panel" Property="BorderBrush" Value="#FF117DF3"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ContentStackPanel" Property="Background">
+                                <Setter TargetName="Panel" Property="Background">
                                     <Setter.Value>
                                         <SolidColorBrush Color="#FF3EA2D4"
                                                          Opacity="0.25"/>
                                     </Setter.Value>
                                 </Setter>
                                 <Setter TargetName="Panel" Property="BorderBrush" Value="#FF1A1AB3"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ContentStackPanel" Property="Opacity" Value="0.3"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -115,14 +165,283 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <XmlDataProvider x:Key="ElementsLstViewData" XPath="/ListElements">
+            <x:XData>
+                <ListElements xmlns="">
+                    <ListViewItem>
+                        <Head>Kanał prosty</Head>
+                        <Image>Icons/duct.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Redukcja</Head>
+                        <Image>Icons/diffuser.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Łuk</Head>
+                        <Image>Icons/bow.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Kolano</Head>
+                        <Image>Icons/elbow.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Trójnik</Head>
+                        <Image>Icons/junction.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Czwórnik</Head>
+                        <Image>Icons/djunction.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Skrzynka rozprężna</Head>
+                        <Image>Icons/plenum.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Tłumik akustczny</Head>
+                        <Image>Icons/silencer.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Przeustnica</Head>
+                        <Image>Icons/damper.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Wentylator</Head>
+                        <Image>Icons/fan.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Kratka wentylacyjna</Head>
+                        <Image>Icons/grill.png</Image>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <Head>Inny element</Head>
+                        <Image>Icons/custom.png</Image>
+                    </ListViewItem>
+                </ListElements>
+            </x:XData>
+        </XmlDataProvider>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="110"/>
             <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Background="Transparent">
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button x:Name="CloseButton"
+                        Click="MenuBarButton_Click" Margin="0.5,0.5,0,0"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        SnapsToDevicePixels="True"
+                        Width="40" ToolTip="Zamknij">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border BorderThickness="0"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                Background="{TemplateBinding Background}"
+                                                VerticalAlignment="Stretch" 
+                                                HorizontalAlignment="Stretch"
+                                                Name="Panel">
+                                            <StackPanel Name="ContentStackPanel"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <Image Width="10" Height="10" Margin="0">
+                                                    <Image.Source>
+                                                        <DrawingImage>
+                                                            <DrawingImage.Drawing>
+                                                                <GeometryDrawing>
+                                                                    <GeometryDrawing.Pen>
+                                                                        <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=BorderBrush}"
+                                                                             Thickness="0.25"/>
+                                                                    </GeometryDrawing.Pen>
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <PathGeometry>
+                                                                            <PathFigure StartPoint="0,0">
+                                                                                <LineSegment Point="5,5"/>
+                                                                            </PathFigure>
+                                                                            <PathFigure StartPoint="5,0">
+                                                                                <LineSegment Point="0,5"/>
+                                                                            </PathFigure>
+                                                                        </PathGeometry>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                            </DrawingImage.Drawing>
+                                                        </DrawingImage>
+                                                    </Image.Source>
+                                                </Image>
+                                            </StackPanel>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFD73131"/>
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="MaximizeButton"
+                        Click="MenuBarButton_Click" Margin="0,0.5,0,0"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        SnapsToDevicePixels="True"
+                        Width="40" ToolTip="Maksymalizuj">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border BorderThickness="0"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                Background="{TemplateBinding Background}"
+                                                VerticalAlignment="Stretch" 
+                                                HorizontalAlignment="Stretch"
+                                                Name="Panel">
+                                            <StackPanel Name="ContentStackPanel"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <Image Name="Image" Source="{DynamicResource Maximize}" Width="10" Height="10" Margin="0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=mainWindow, Path=WindowState}" Value="Maximized">
+                                                <Setter TargetName="Image" Property="Source" Value="{DynamicResource Maximized}"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Resources>
+                        <DrawingImage x:Key="Maximize">
+                            <DrawingImage.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="Black" Thickness="0.25"/>
+                                    </GeometryDrawing.Pen>
+                                    <GeometryDrawing.Geometry>
+                                        <PathGeometry>
+                                            <PathFigure StartPoint="0,0">
+                                                <LineSegment Point="5,0"/>
+                                                <LineSegment Point="5,5"/>
+                                                <LineSegment Point="0,5"/>
+                                                <LineSegment Point="0,0"/>
+                                            </PathFigure>
+                                        </PathGeometry>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                        <DrawingImage x:Key="Maximized">
+                            <DrawingImage.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="Black" LineJoin="Miter" Thickness="0.25"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="1.2,-1.2">
+                                                    <LineSegment Point="6.2,-1.2"/>
+                                                    <LineSegment Point="6.2,3.8"/>
+                                                    <LineSegment Point="1.2,3.8"/>
+                                                    <LineSegment Point="1.2,-1.2"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                    <GeometryDrawing Brush="#FFF7F7F7">
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="Black" LineJoin="Miter" Thickness="0.25"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0,0">
+                                                    <LineSegment Point="5,0"/>
+                                                    <LineSegment Point="5,5"/>
+                                                    <LineSegment Point="0,5"/>
+                                                    <LineSegment Point="0,0"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                    </Button.Resources>
+                </Button>
+                <Button x:Name="MinimizeButton"
+                        Click="MenuBarButton_Click" Margin="0,0.5,0,0"
+                        WindowChrome.IsHitTestVisibleInChrome="True" 
+                        SnapsToDevicePixels="True"
+                        Width="40" ToolTip="Minimalizuj">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border BorderThickness="0"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                Background="{TemplateBinding Background}"
+                                                VerticalAlignment="Stretch" 
+                                                HorizontalAlignment="Stretch"
+                                                Name="Panel">
+                                            <StackPanel Name="ContentStackPanel"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <Image Width="10" Height="10" Margin="0">
+                                                    <Image.Source>
+                                                        <DrawingImage>
+                                                            <DrawingImage.Drawing>
+                                                                <GeometryDrawing>
+                                                                    <GeometryDrawing.Pen>
+                                                                        <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=BorderBrush}"
+                                                                             Thickness="0.25"/>
+                                                                    </GeometryDrawing.Pen>
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <PathGeometry>
+                                                                            <PathFigure StartPoint="0,0">
+                                                                                <LineSegment Point="5,0"/>
+                                                                            </PathFigure>
+                                                                        </PathGeometry>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                            </DrawingImage.Drawing>
+                                                        </DrawingImage>
+                                                    </Image.Source>
+                                                </Image>
+                                            </StackPanel>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Margin="0,1.5,0,0">
             <DockPanel>
                 <StackPanel x:Name="MenuStackPanel"
                             Margin="0,0,0,-2" 
@@ -141,12 +460,12 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
-                                            <Border BorderThickness="0" Margin="0,0,0,-1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="Panel">
+                                            <Border BorderThickness="0" Margin="0,0,0,-0.5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="Panel">
                                                 <StackPanel Name="ContentStackPanel" Background="#FF3566C7">
                                                     <ContentPresenter VerticalAlignment="Center"
-                                                                HorizontalAlignment="Center"
-                                                                Content="Plik"
-                                                                Margin="20,3,20,3"/>
+                                                                      HorizontalAlignment="Center"
+                                                                      Content="Plik"
+                                                                      Margin="20,3,20,3"/>
                                                 </StackPanel>
                                             </Border>
                                             <ControlTemplate.Triggers>
@@ -205,11 +524,9 @@
                     <RadioButton x:Name="ToolsRadioButton" Content="Narzędzia główne" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
                     <RadioButton x:Name="ResultsRadioButton" Content="Wyniki pracy" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
                 </StackPanel>
-                <TabControl Margin="-2,0,-2,0"
-                            RenderOptions.EdgeMode="Aliased"
-                            BorderThickness="0.5,0.5,0.5,1.2" 
+                <TabControl BorderThickness="0,0.5,0,0.5"
                             x:Name="mainTabControl"
-                            Padding="6,0,6,0"
+                            Padding="5,0,5,0"
                             Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}" 
                             BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}">
                     <TabItem x:Name="ProjectTabItem" Visibility="Collapsed">
@@ -217,8 +534,9 @@
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
                                             Orientation="Horizontal">
-                                    <ListView x:Name="ElementsListView" Width="480" Background="White" 
-                                              BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}" 
+                                    <ListView x:Name="ElementsListView" Width="495" Background="White" 
+                                              BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                              ItemsSource="{Binding Source={StaticResource ElementsLstViewData}, XPath=ListViewItem}"
                                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0.5"
                                               SelectedIndex="0" Margin="0,0,5,0">
                                         <ListView.ItemContainerStyle>
@@ -226,11 +544,12 @@
                                                 <Setter Property="Template">
                                                     <Setter.Value>
                                                         <ControlTemplate TargetType="ListViewItem">
-                                                            <Border Name="OutsideContentBorder" BorderBrush="Transparent" BorderThickness="0" SnapsToDevicePixels="True">
-                                                                <Border Name="ContentBorder" BorderThickness="2.5">
-                                                                    <ContentPresenter Width="90" 
-                                                                                  VerticalAlignment="Stretch" 
-                                                                                  HorizontalAlignment="Stretch"/>
+                                                            <Border Name="OutsideContentBorder" BorderBrush="Transparent"
+                                                                    BorderThickness="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                                <Border Name="ContentBorder" BorderThickness="4">
+                                                                    <ContentPresenter Width="90"
+                                                                                      VerticalAlignment="Center" 
+                                                                                      HorizontalAlignment="Center"/>
                                                                 </Border>
                                                             </Border>
                                                             <ControlTemplate.Triggers>
@@ -263,8 +582,8 @@
                                                                                              Opacity="0.6"/>
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                    <Setter Property="BorderThickness" TargetName="OutsideContentBorder" Value="0.75"/>
-                                                                    <Setter Property="BorderThickness" TargetName="ContentBorder" Value="1.75"/>
+                                                                    <Setter Property="BorderThickness" TargetName="OutsideContentBorder" Value="1.5"/>
+                                                                    <Setter Property="BorderThickness" TargetName="ContentBorder" Value="2.5"/>
                                                                 </MultiTrigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
@@ -289,94 +608,124 @@
                                                 <StackPanel Orientation="Horizontal"/>
                                             </ItemsPanelTemplate>
                                         </ListView.ItemsPanel>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/duct.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Kanał prosty"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/diffuser.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Redukcja"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/bow.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Łuk"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/elbow.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Kolano"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/junction.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Trójnik"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/djunction.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Czwórnik"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/plenum.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Skrzynka rozprężna"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/silencer.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Tłumik akustyczny"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/damper.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Przepustnica"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/fan.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Wentylator"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/grill.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Kratka wentylacyjna"/>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                        <ListViewItem>
-                                            <StackPanel>
-                                                <Image Width="45" Source="Icons/custom.png" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="Inny element"/>
-                                            </StackPanel>
-                                        </ListViewItem>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <Image Width="42" Source="{Binding XPath=Image}" Stretch="Uniform" Margin="0,0,0,3"/>
+                                                    <TextBlock FontSize="10" HorizontalAlignment="Center" Text="{Binding XPath=Head}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                        <ListView.Resources>
+                                            <Popup x:Key="ElementsListViewPopup" Placement="Relative"             
+                                                   Name="ElementsPopup" StaysOpen="False"
+                                                   Closed="ElementsPopup_Closed">
+                                                <ContentControl>
+                                                    <ListView ItemContainerStyle="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemContainerStyle}" 
+                                                              Width="507.5" Height="180" Background="White" 
+                                                              BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}" 
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0.5"
+                                                              SelectedIndex="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=SelectedIndex}"
+                                                              ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemsSource}"
+                                                              ItemTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemTemplate}"
+                                                              TextOptions.TextRenderingMode="ClearType"
+                                                              RenderOptions.BitmapScalingMode="HighQuality" 
+                                                              RenderOptions.ClearTypeHint="Enabled">
+                                                        <ListView.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ListView.ItemsPanel>
+                                                    </ListView>
+                                                </ContentControl>
+                                            </Popup>
+                                        </ListView.Resources>
                                     </ListView>
-                                    <Grid Width="13" Margin="-6,0,4,0">
+                                    <Grid Width="13" Panel.ZIndex="1" 
+                                          Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}" Margin="-6,0,4,0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Button Style="{StaticResource ResourceKey=ListViewControlButtonStyle}"
-                                                Margin="0.5,0,0,0">
-                                            
+                                        <Button x:Name="UpButton" Style="{StaticResource ResourceKey=ListViewControlButtonStyle}"
+                                                Margin="0,0,0,0" IsEnabled="False" 
+                                                ToolTip="Przewiń listę w górę" Click="Button_Click">
+                                            <Image Margin="3.5">
+                                                <Image.Source>
+                                                    <DrawingImage>
+                                                        <DrawingImage.Drawing>
+                                                            <GeometryDrawing Brush="Black">
+                                                                <GeometryDrawing.Pen>
+                                                                    <Pen Brush="Black" Thickness="0.25"/>
+                                                                </GeometryDrawing.Pen>
+                                                                <GeometryDrawing.Geometry>
+                                                                    <PathGeometry>
+                                                                        <PathFigure StartPoint="5,3">
+                                                                            <LineSegment Point="2.5,0"/>
+                                                                            <LineSegment Point="0,3"/>
+                                                                        </PathFigure>
+                                                                    </PathGeometry>
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                        </DrawingImage.Drawing>
+                                                    </DrawingImage>
+                                                </Image.Source>
+                                            </Image>
                                         </Button>
-                                        <Button Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" Grid.Row="1" Margin="0.5,-0.5,0,0">
-                                            
+                                        <Button x:Name="DownButton" Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" Grid.Row="1"
+                                                Margin="0,-0.5,0,0" 
+                                                ToolTip="Przewiń listę w dół" Click="Button_Click">
+                                            <Image Margin="3.5">
+                                                <Image.Source>
+                                                    <DrawingImage>
+                                                        <DrawingImage.Drawing>
+                                                            <GeometryDrawing Brush="Black">
+                                                                <GeometryDrawing.Pen>
+                                                                    <Pen Brush="Black" Thickness="0.25"/>
+                                                                </GeometryDrawing.Pen>
+                                                                <GeometryDrawing.Geometry>
+                                                                    <PathGeometry>
+                                                                        <PathFigure StartPoint="5,3">
+                                                                            <LineSegment Point="2.5,6"/>
+                                                                            <LineSegment Point="0,3"/>
+                                                                        </PathFigure>
+                                                                    </PathGeometry>
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                        </DrawingImage.Drawing>
+                                                    </DrawingImage>
+                                                </Image.Source>
+                                            </Image>
                                         </Button>
-                                        <Button Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" Grid.Row="2" Margin="0.5,-0.5,0,0">
-                                            
+                                        <Button x:Name="EjectButton"
+                                                Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" 
+                                                Grid.Row="2" Margin="0,-0.5,0,0" ToolTip="Rozwiń listę" 
+                                                Click="EjectButton_Click">
+                                            <Image Margin="2.5,0,2.8,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Image.Source>
+                                                    <DrawingImage>
+                                                        <DrawingImage.Drawing>
+                                                            <GeometryDrawing Brush="Black">
+                                                                <GeometryDrawing.Pen>
+                                                                    <Pen Brush="Black" LineJoin="Miter" Thickness="0.5"/>
+                                                                </GeometryDrawing.Pen>
+                                                                <GeometryDrawing.Geometry>
+                                                                    <PathGeometry>
+                                                                        <PathFigure StartPoint="5,3">
+                                                                            <LineSegment Point="2.5,6"/>
+                                                                            <LineSegment Point="0,3"/>
+                                                                        </PathFigure>
+                                                                        <PathFigure StartPoint="-1,0.5">
+                                                                            <LineSegment Point="6,0.5"/>
+                                                                        </PathFigure>
+                                                                    </PathGeometry>
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                        </DrawingImage.Drawing>
+                                                    </DrawingImage>
+                                                </Image.Source>
+                                            </Image>
                                         </Button>
                                     </Grid>
                                     <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
@@ -397,7 +746,8 @@
                                 </StackPanel>
                             </DockPanel>
                             <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}" StrokeThickness="1.5" Margin="4,3,4,3"/>
+                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
                                             Orientation="Horizontal">
@@ -459,7 +809,8 @@
                                 </StackPanel>
                             </DockPanel>
                             <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}" StrokeThickness="1.7" Margin="4,3,4,3"/>
+                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
                         </StackPanel>
                     </TabItem>
                     <TabItem Visibility="Collapsed" x:Name="ToolsTabItem">
@@ -491,14 +842,14 @@
             </DockPanel>
         </Grid>
         
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <TreeView Margin="5" Height="{Binding ElementName=mainWindow, Path=Height}"></TreeView>
-            </StackPanel>
+            <Grid Grid.Column="0" VerticalAlignment="Stretch" Margin="5">
+                <TreeView></TreeView>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
