@@ -166,5 +166,16 @@
     <Resource Include="Icons\custom.png" />
     <Resource Include="Icons\grill.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\filter.png" />
+    <Resource Include="Icons\find.png" />
+    <Resource Include="Icons\replace.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\simulate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\noiseReduction.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
