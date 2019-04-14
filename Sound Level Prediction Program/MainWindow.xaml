@@ -7,10 +7,11 @@
         xmlns:t="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         x:Name="mainWindow"
-        Title="Sound Level Prediction Program"
+        Title="Sound Level Prediction Program" SnapsToDevicePixels="True"
         MinHeight="500" MinWidth="800" Height="670" Width="1000">
     <Window.Style>
         <Style TargetType="Window">
+            <Setter Property="FontSize" Value="11"/>
             <Setter Property="WindowChrome.WindowChrome">
                 <Setter.Value>
                     <WindowChrome CaptionHeight="30"
@@ -21,7 +22,7 @@
                                   UseAeroCaptionButtons="False"/>
                 </Setter.Value>
             </Setter>
-            <Setter Property="BorderBrush" Value="{StaticResource MenuBorderColorBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource MenuBarBackgroundColorBrush}"/>
             <Setter Property="BorderThickness" Value="0.5"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Background">
@@ -51,24 +52,27 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="WindowState" Value="Maximized">
-                    <Setter Property="Padding" Value="7,7.25,7,7.25"/>
+                    <Setter Property="Padding" Value="7"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Style>
     <Window.Resources>
         <Style x:Key="MainRadioButtonStyle" TargetType="RadioButton">
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontSize" Value="11.75"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}" VerticalAlignment="Stretch" 
-                                HorizontalAlignment="Center" BorderThickness="0.5" Name="Panel">
+                        <Border VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Center" 
+                                BorderThickness="0" 
+                                Name="Panel">
                             <StackPanel Name="ContentStackPanel" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
                                 <ContentPresenter VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   Content="{TemplateBinding Content}"
-                                                  Margin="12,3,12,3"/>
+                                                  Margin="12,6,12,6"/>
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -76,13 +80,17 @@
                                 <Setter TargetName="ContentStackPanel" Property="Margin" Value="0,0,0,-5"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="ContentStackPanel" Property="Background" Value="Transparent"/>
-                                <Setter TargetName="Panel" Property="BorderBrush" Value="Transparent"/>
+                                <Setter TargetName="ContentStackPanel" Property="Background" Value="{StaticResource ResourceKey=MenuBarBackgroundColorBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuBarBackgroundColorBrush}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="RibbonElementButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="11"/>
@@ -202,6 +210,40 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="MenuBarControlButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="0,0.5,0,0"/>
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="0"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch"
+                                Name="Panel">
+                            <StackPanel Name="ContentStackPanel"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Content="{TemplateBinding Content}"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource MenuBarActiveControlColorBrush}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FF3A66BF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <XmlDataProvider x:Key="ElementsLstViewData" XPath="/ListElements">
             <x:XData>
                 <ListElements xmlns="">
@@ -238,7 +280,7 @@
                         <Image>Icons/silencer.png</Image>
                     </ListViewItem>
                     <ListViewItem>
-                        <Head>Przeustnica</Head>
+                        <Head>Przepustnica</Head>
                         <Image>Icons/damper.png</Image>
                     </ListViewItem>
                     <ListViewItem>
@@ -260,79 +302,78 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="110"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="90"/>
             <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="Transparent">
+        <Grid Grid.Row="0" Margin="0,0,0,-1" Background="{StaticResource MenuBarBackgroundColorBrush}">
+            <StackPanel Margin="30,0,0,6" Orientation="Horizontal" FlowDirection="LeftToRight">
+                <Button x:Name="NewProjectButton" Width="30" ToolTip="Zapisz (Ctrl+S)"
+                        Style="{StaticResource MenuBarControlButtonStyle}">
+                    <Image Margin="6,0,6,3" VerticalAlignment="Bottom" Source="Icons/saveMenuBar.png"/>
+                </Button>
+                <Button x:Name="BackOperationButton" Width="30" ToolTip="Cofnij ostatnią operację (Ctrl+Z)"
+                        Style="{StaticResource MenuBarControlButtonStyle}">
+                    <Viewbox Margin="8,0,8,3" VerticalAlignment="Bottom">
+                        <Path Stroke="White" Fill="White" StrokeThickness="1" StrokeLineJoin="Miter" 
+                              Data="M56,15l-56,41l56,41v-25h64c22.28125,0 40,17.71875 40,40c0,22.28125 -17.71875,40 -40,40h-120v32h120c39.5625,0 72,-32.4375 72,-72c0,-39.5625 -32.4375,-72 -72,-72h-64z"/>
+                   </Viewbox>
+                </Button>
+            </StackPanel>
+            <Label HorizontalAlignment="Center" FontSize="11.75" Foreground="White" Content="Sound Level Prediction Program"/>
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button x:Name="CloseButton"
-                        Click="MenuBarButton_Click" Margin="0.5,0.5,0,0"
-                        WindowChrome.IsHitTestVisibleInChrome="True"
-                        SnapsToDevicePixels="True"
-                        Width="40" ToolTip="Zamknij">
+                        Click="MenuBarButton_Click"
+                        Width="45" ToolTip="Zamknij">
                     <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border BorderThickness="0"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                Background="{TemplateBinding Background}"
-                                                VerticalAlignment="Stretch" 
-                                                HorizontalAlignment="Stretch"
-                                                Name="Panel">
-                                            <StackPanel Name="ContentStackPanel"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center">
-                                                <Image Width="10" Height="10" Margin="0">
-                                                    <Image.Source>
-                                                        <DrawingImage>
-                                                            <DrawingImage.Drawing>
-                                                                <GeometryDrawing>
-                                                                    <GeometryDrawing.Pen>
-                                                                        <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=BorderBrush}"
-                                                                             Thickness="0.25"/>
-                                                                    </GeometryDrawing.Pen>
-                                                                    <GeometryDrawing.Geometry>
-                                                                        <PathGeometry>
-                                                                            <PathFigure StartPoint="0,0">
-                                                                                <LineSegment Point="5,5"/>
-                                                                            </PathFigure>
-                                                                            <PathFigure StartPoint="5,0">
-                                                                                <LineSegment Point="0,5"/>
-                                                                            </PathFigure>
-                                                                        </PathGeometry>
-                                                                    </GeometryDrawing.Geometry>
-                                                                </GeometryDrawing>
-                                                            </DrawingImage.Drawing>
-                                                        </DrawingImage>
-                                                    </Image.Source>
-                                                </Image>
-                                            </StackPanel>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+                        <Style BasedOn="{StaticResource MenuBarControlButtonStyle}" TargetType="Button">
+                            <Setter Property="Margin" Value="0.5,0.5,0,0"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#FFED0C0C"/>
-                                    <Setter Property="BorderBrush" Value="White"/>
+                                    <Setter Property="Background" Value="#FFCE2E2E"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="#FFCE2E2E"
+                                                             Opacity="0.8"/>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </Button.Style>
+                    <Image Width="10" Height="10" Margin="0">
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=BorderBrush}"
+                                                 Thickness="0.35"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0,0">
+                                                    <LineSegment Point="5,5"/>
+                                                </PathFigure>
+                                                <PathFigure StartPoint="5,0">
+                                                    <LineSegment Point="0,5"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
                 </Button>
                 <Button x:Name="MaximizeButton"
-                        Click="MenuBarButton_Click" Margin="0,0.5,0,0"
-                        WindowChrome.IsHitTestVisibleInChrome="True"
-                        SnapsToDevicePixels="True"
-                        Width="40" ToolTip="Maksymalizuj">
+                        Click="MenuBarButton_Click"
+                        Width="45" ToolTip="Maksymalizuj">
                     <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
+                        <Style BasedOn="{StaticResource MenuBarControlButtonStyle}" TargetType="Button">
+                            <Setter Property="BorderBrush" Value="{StaticResource MenuBarBackgroundColorBrush}"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
@@ -345,7 +386,8 @@
                                             <StackPanel Name="ContentStackPanel"
                                                         VerticalAlignment="Center"
                                                         HorizontalAlignment="Center">
-                                                <Image Name="Image" Source="{DynamicResource Maximize}" Width="10" Height="10" Margin="0"/>
+                                                <Image Name="Image" Source="{DynamicResource Maximize}" 
+                                                       Width="10" Height="10" Margin="0"/>
                                             </StackPanel>
                                         </Border>
                                         <ControlTemplate.Triggers>
@@ -358,7 +400,12 @@
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Background" Value="{StaticResource MenuBarActiveControlColorBrush}"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource MenuBarActiveControlColorBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#FF3A66BF"/>
+                                    <Setter Property="BorderBrush" Value="#FF3A66BF"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -368,11 +415,11 @@
                             <DrawingImage.Drawing>
                                 <GeometryDrawing>
                                     <GeometryDrawing.Pen>
-                                        <Pen Brush="Black" Thickness="0.25"/>
+                                        <Pen Brush="White" LineJoin="Miter" Thickness="0.35"/>
                                     </GeometryDrawing.Pen>
                                     <GeometryDrawing.Geometry>
                                         <PathGeometry>
-                                            <PathFigure StartPoint="0,0">
+                                            <PathFigure IsClosed="True" StartPoint="0,0">
                                                 <LineSegment Point="5,0"/>
                                                 <LineSegment Point="5,5"/>
                                                 <LineSegment Point="0,5"/>
@@ -388,11 +435,11 @@
                                 <DrawingGroup>
                                     <GeometryDrawing>
                                         <GeometryDrawing.Pen>
-                                            <Pen Brush="Black" LineJoin="Miter" Thickness="0.25"/>
+                                            <Pen Brush="White" LineJoin="Miter" Thickness="0.35"/>
                                         </GeometryDrawing.Pen>
                                         <GeometryDrawing.Geometry>
                                             <PathGeometry>
-                                                <PathFigure StartPoint="1.2,-1.2">
+                                                <PathFigure IsClosed="True" StartPoint="1.2,-1.2">
                                                     <LineSegment Point="6.2,-1.2"/>
                                                     <LineSegment Point="6.2,3.8"/>
                                                     <LineSegment Point="1.2,3.8"/>
@@ -401,13 +448,13 @@
                                             </PathGeometry>
                                         </GeometryDrawing.Geometry>
                                     </GeometryDrawing>
-                                    <GeometryDrawing Brush="#FFF7F7F7">
+                                    <GeometryDrawing Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=BorderBrush}">
                                         <GeometryDrawing.Pen>
-                                            <Pen Brush="Black" LineJoin="Miter" Thickness="0.25"/>
+                                            <Pen Brush="White" LineJoin="Miter" Thickness="0.35"/>
                                         </GeometryDrawing.Pen>
                                         <GeometryDrawing.Geometry>
                                             <PathGeometry>
-                                                <PathFigure StartPoint="0,0">
+                                                <PathFigure IsClosed="True" StartPoint="0,0">
                                                     <LineSegment Point="5,0"/>
                                                     <LineSegment Point="5,5"/>
                                                     <LineSegment Point="0,5"/>
@@ -422,609 +469,615 @@
                     </Button.Resources>
                 </Button>
                 <Button x:Name="MinimizeButton"
-                        Click="MenuBarButton_Click" Margin="0,0.5,0,0"
-                        WindowChrome.IsHitTestVisibleInChrome="True" 
-                        SnapsToDevicePixels="True"
-                        Width="40" ToolTip="Minimalizuj">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border BorderThickness="0"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                Background="{TemplateBinding Background}"
-                                                VerticalAlignment="Stretch" 
-                                                HorizontalAlignment="Stretch"
-                                                Name="Panel">
-                                            <StackPanel Name="ContentStackPanel"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center">
-                                                <Image Width="10" Height="10" Margin="0">
-                                                    <Image.Source>
-                                                        <DrawingImage>
-                                                            <DrawingImage.Drawing>
-                                                                <GeometryDrawing>
-                                                                    <GeometryDrawing.Pen>
-                                                                        <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=BorderBrush}"
-                                                                             Thickness="0.25"/>
-                                                                    </GeometryDrawing.Pen>
-                                                                    <GeometryDrawing.Geometry>
-                                                                        <PathGeometry>
-                                                                            <PathFigure StartPoint="0,0">
-                                                                                <LineSegment Point="5,0"/>
-                                                                            </PathFigure>
-                                                                        </PathGeometry>
-                                                                    </GeometryDrawing.Geometry>
-                                                                </GeometryDrawing>
-                                                            </DrawingImage.Drawing>
-                                                        </DrawingImage>
-                                                    </Image.Source>
-                                                </Image>
-                                            </StackPanel>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="White"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
+                        Style="{StaticResource MenuBarControlButtonStyle}"
+                        Click="MenuBarButton_Click"
+                        Width="45" ToolTip="Minimalizuj">
+                    <Image Width="10" Height="10" Margin="0">
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=BorderBrush}"
+                                                 Thickness="0.35"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0,0">
+                                                    <LineSegment Point="5,0"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" Margin="0,1.5,0,0">
-            <DockPanel>
-                <StackPanel x:Name="MenuStackPanel"
-                            Margin="0,0,0,-2" 
-                            Panel.ZIndex="1" 
-                            DockPanel.Dock="Top" 
-                            Orientation="Horizontal" 
-                            FlowDirection="LeftToRight">
-                    <Button Foreground="White">
-                        <t:Interaction.Behaviors>
-                            <local:DropDownButton/>
-                        </t:Interaction.Behaviors>
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="FontSize" Value="11"/>
-                                <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border BorderThickness="0" Margin="0,0,0,-0.5" VerticalAlignment="Stretch" 
+        <Grid Grid.Row="1" Margin="0,0,0,-1" Background="{StaticResource MenuBarBackgroundColorBrush}">
+            <StackPanel x:Name="MenuStackPanel"
+                        Panel.ZIndex="1"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal"
+                        FlowDirection="LeftToRight">
+                <Button Foreground="White">
+                    <t:Interaction.Behaviors>
+                        <local:DropDownButton/>
+                    </t:Interaction.Behaviors>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border BorderThickness="0" VerticalAlignment="Stretch" 
                                                     HorizontalAlignment="Stretch" Name="Panel">
-                                                <StackPanel Name="ContentStackPanel" Background="#FF2F69DC">
-                                                    <ContentPresenter VerticalAlignment="Center"
+                                            <StackPanel Name="ContentStackPanel" Background="{StaticResource MenuBarBackgroundColorBrush}">
+                                                <ContentPresenter VerticalAlignment="Center"
                                                                       HorizontalAlignment="Center"
-                                                                      Content="Plik"
-                                                                      Margin="20,3,20,3"/>
-                                                </StackPanel>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="ContentStackPanel" Property="Background" Value="#FF6087D7"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                        <Button.ContextMenu>
-                            <ContextMenu Background="{StaticResource MenuBackgroundColorBrush}" FontSize="11">
-                                <MenuItem Header="Nowy projekt" InputGestureText="Ctrl+N">
-                                    <MenuItem.Icon>
-                                        <Image Height="14.7"
+                                                                      Margin="12,5,12,0">
+                                                    <ContentPresenter.Content>
+                                                        <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                                            <Image Source="Icons/fileMenu.png" Height="18"/>
+                                                            <Image Margin="2.5">
+                                                                <Image.Source>
+                                                                    <DrawingImage>
+                                                                        <DrawingImage.Drawing>
+                                                                            <GeometryDrawing Brush="White">
+                                                                                <GeometryDrawing.Pen>
+                                                                                    <Pen Brush="White" Thickness="0.25"/>
+                                                                                </GeometryDrawing.Pen>
+                                                                                <GeometryDrawing.Geometry>
+                                                                                    <PathGeometry>
+                                                                                        <PathFigure StartPoint="5,3">
+                                                                                            <LineSegment Point="2.5,6"/>
+                                                                                            <LineSegment Point="0,3"/>
+                                                                                        </PathFigure>
+                                                                                    </PathGeometry>
+                                                                                </GeometryDrawing.Geometry>
+                                                                            </GeometryDrawing>
+                                                                        </DrawingImage.Drawing>
+                                                                    </DrawingImage>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </StackPanel>
+                                                    </ContentPresenter.Content>
+                                                </ContentPresenter>
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ContentStackPanel" Property="Background" Value="#FF6087D7"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                    <Button.ContextMenu>
+                        <ContextMenu Background="{StaticResource MenuBackgroundColorBrush}" FontSize="11">
+                            <MenuItem Header="Nowy projekt" InputGestureText="Ctrl+N">
+                                <MenuItem.Icon>
+                                    <Image Height="14.7"
                                                Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
                                                Source="Icons/newProject.png"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="Otwórz">
-                                    <MenuItem.Icon>
-                                        <Image Height="14.7"
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Otwórz">
+                                <MenuItem.Icon>
+                                    <Image Height="14.7"
                                                Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
                                                Source="Icons/open.png"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator Margin="0,4"/>
-                                <MenuItem Header="Zapisz" InputGestureText="Ctrl+S">
-                                    <MenuItem.Icon>
-                                        <Image Height="14.7"
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator Margin="0,4"/>
+                            <MenuItem Header="Zapisz" InputGestureText="Ctrl+S">
+                                <MenuItem.Icon>
+                                    <Image Height="14.7"
                                                Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
                                                Source="Icons/save.png"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="Zapisz jako..." InputGestureText="Ctrl+Shift+S">
-                                    <MenuItem.Icon>
-                                        <Image Height="14.7"
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Zapisz jako..." InputGestureText="Ctrl+Shift+S">
+                                <MenuItem.Icon>
+                                    <Image Height="14.7"
                                                Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
                                                Source="Icons/saveAs.png"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator Margin="0,4"/>
-                                <MenuItem Header="Zakończ" InputGestureText="Alt+F4">
-                                    <MenuItem.Icon>
-                                        <Image Height="14.7"
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator Margin="0,4"/>
+                            <MenuItem Header="Zakończ" InputGestureText="Alt+F4">
+                                <MenuItem.Icon>
+                                    <Image Height="14.7"
                                                Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
                                                Source="Icons/shutdown.png"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </Button.ContextMenu>
-                    </Button>
-                    <RadioButton x:Name="ProjectRadioButton" Margin="-0.5,0,0,0" IsChecked="True" Content="Projekt" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
-                    <RadioButton x:Name="ToolsRadioButton" Content="Narzędzia główne" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
-                    <RadioButton x:Name="ResultsRadioButton" Content="Wyniki pracy" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
-                </StackPanel>
-                <TabControl BorderThickness="0,0.5,0,0.5"
-                            x:Name="mainTabControl"
-                            Padding="5,0,5,0"
-                            Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}" 
-                            BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}">
-                    <TabItem x:Name="ProjectTabItem" Visibility="Collapsed">
-                        <StackPanel HorizontalAlignment="Left" FlowDirection="LeftToRight" Orientation="Horizontal">
-                            <DockPanel>
-                                <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <RadioButton x:Name="ProjectRadioButton" IsChecked="True" Content="Projekt" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
+                <RadioButton x:Name="ToolsRadioButton" Content="Narzędzia główne" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
+                <RadioButton x:Name="ResultsRadioButton" Content="Wyniki pracy" Style="{StaticResource ResourceKey=MainRadioButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <TabControl BorderThickness="0,0,0,0.5"
+                        x:Name="mainTabControl"
+                        Padding="5,0,5,0"
+                        Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}" 
+                        BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}">
+                <TabItem x:Name="ProjectTabItem" Visibility="Collapsed">
+                    <StackPanel HorizontalAlignment="Left" FlowDirection="LeftToRight" Orientation="Horizontal">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
                                             Orientation="Horizontal">
-                                    <ListView x:Name="ElementsListView" Width="495" Background="White" 
-                                              BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                              ItemsSource="{Binding Source={StaticResource ElementsLstViewData}, XPath=ListViewItem}"
-                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0.5"
-                                              SelectedIndex="0" Margin="0,0,5,0">
-                                        <ListView.ItemContainerStyle>
-                                            <Style TargetType="ListViewItem">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="ListViewItem">
-                                                            <Border Name="OutsideContentBorder" BorderBrush="Transparent"
-                                                                    BorderThickness="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                                <Border Name="ContentBorder" BorderThickness="4">
-                                                                    <ContentPresenter Width="90"
-                                                                                      VerticalAlignment="Center" 
-                                                                                      HorizontalAlignment="Center"/>
-                                                                </Border>
+                                <ListView x:Name="ElementsListView" Width="495" Background="White" 
+                                          BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                          ItemsSource="{Binding Source={StaticResource ElementsLstViewData}, XPath=ListViewItem}"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0.5"
+                                          SelectedIndex="0" Margin="0,0,5,0">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListViewItem">
+                                                        <Border Name="OutsideContentBorder" BorderBrush="Transparent"
+                                                                BorderThickness="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                            <Border Name="ContentBorder" BorderThickness="4">
+                                                                <ContentPresenter Width="90"
+                                                                                  VerticalAlignment="Center" 
+                                                                                  HorizontalAlignment="Center"/>
                                                             </Border>
-                                                            <ControlTemplate.Triggers>
-                                                                <MultiTrigger>
-                                                                    <MultiTrigger.Conditions>
-                                                                        <Condition Property="IsMouseOver" Value="True"/>
-                                                                        <Condition Property="IsSelected" Value="False"/>
-                                                                    </MultiTrigger.Conditions>
-                                                                    <Setter Property="BorderBrush" TargetName="ContentBorder">
-                                                                        <Setter.Value>
-                                                                            <SolidColorBrush Color="#FF4486F4"
-                                                                                             Opacity="0.5"/>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </MultiTrigger>
-                                                                <MultiTrigger>
-                                                                    <MultiTrigger.Conditions>
-                                                                        <Condition Property="IsMouseOver" Value="True"/>
-                                                                        <Condition Property="IsSelected" Value="True"/>
-                                                                    </MultiTrigger.Conditions>
-                                                                    <Setter Property="BorderBrush" TargetName="ContentBorder">
-                                                                        <Setter.Value>
-                                                                            <SolidColorBrush Color="#FF4486F4"
-                                                                                             Opacity="0.5"/>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                    <Setter Property="BorderBrush" TargetName="OutsideContentBorder">
-                                                                        <Setter.Value>
-                                                                            <SolidColorBrush Color="#FF174FAD"
-                                                                                             Opacity="0.6"/>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                    <Setter Property="BorderThickness" TargetName="OutsideContentBorder" Value="1.5"/>
-                                                                    <Setter Property="BorderThickness" TargetName="ContentBorder" Value="2.5"/>
-                                                                </MultiTrigger>
-                                                                <MultiTrigger>
-                                                                    <MultiTrigger.Conditions>
-                                                                        <Condition Property="IsMouseOver" Value="False"/>
-                                                                        <Condition Property="IsSelected" Value="True"/>
-                                                                    </MultiTrigger.Conditions>
-                                                                    <Setter Property="BorderBrush" TargetName="ContentBorder">
-                                                                        <Setter.Value>
-                                                                            <SolidColorBrush Color="#FF174FAD"
-                                                                                             Opacity="0.6"/>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </MultiTrigger>
-                                                            </ControlTemplate.Triggers>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ListView.ItemContainerStyle>
-                                        <ListView.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal"/>
-                                            </ItemsPanelTemplate>
-                                        </ListView.ItemsPanel>
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel>
-                                                    <Image Width="42" Source="{Binding XPath=Image}" Stretch="Uniform" Margin="0,0,0,3"/>
-                                                    <TextBlock FontSize="10" HorizontalAlignment="Center" Text="{Binding XPath=Head}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                        <ListView.Resources>
-                                            <Popup x:Key="ElementsListViewPopup" Placement="Relative"             
-                                                   Name="ElementsPopup" StaysOpen="False"
-                                                   Closed="ElementsPopup_Closed">
-                                                <ContentControl>
-                                                    <ListView ItemContainerStyle="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemContainerStyle}" 
-                                                              Width="507.5" Height="180" Background="White" 
-                                                              BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0.5"
-                                                              SelectedIndex="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=SelectedIndex}"
-                                                              ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemsSource}"
-                                                              ItemTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemTemplate}"
-                                                              TextOptions.TextRenderingMode="ClearType"
-                                                              RenderOptions.BitmapScalingMode="HighQuality" 
-                                                              RenderOptions.ClearTypeHint="Enabled">
-                                                        <ListView.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <WrapPanel Orientation="Horizontal"/>
-                                                            </ItemsPanelTemplate>
-                                                        </ListView.ItemsPanel>
-                                                    </ListView>
-                                                </ContentControl>
-                                            </Popup>
-                                        </ListView.Resources>
-                                    </ListView>
-                                    <Grid Width="13" Panel.ZIndex="1" 
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <MultiTrigger>
+                                                                <MultiTrigger.Conditions>
+                                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                                    <Condition Property="IsSelected" Value="False"/>
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter Property="BorderBrush" TargetName="ContentBorder">
+                                                                    <Setter.Value>
+                                                                        <SolidColorBrush Color="#FF4486F4"
+                                                                                         Opacity="0.5"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </MultiTrigger>
+                                                            <MultiTrigger>
+                                                                <MultiTrigger.Conditions>
+                                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                                    <Condition Property="IsSelected" Value="True"/>
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter Property="BorderBrush" TargetName="ContentBorder">
+                                                                    <Setter.Value>
+                                                                        <SolidColorBrush Color="#FF4486F4"
+                                                                                         Opacity="0.5"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                                <Setter Property="BorderBrush" TargetName="OutsideContentBorder">
+                                                                    <Setter.Value>
+                                                                        <SolidColorBrush Color="#FF174FAD"
+                                                                                         Opacity="0.6"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                                <Setter Property="BorderThickness" TargetName="OutsideContentBorder" Value="1.5"/>
+                                                                <Setter Property="BorderThickness" TargetName="ContentBorder" Value="2.5"/>
+                                                            </MultiTrigger>
+                                                            <MultiTrigger>
+                                                                <MultiTrigger.Conditions>
+                                                                    <Condition Property="IsMouseOver" Value="False"/>
+                                                                    <Condition Property="IsSelected" Value="True"/>
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter Property="BorderBrush" TargetName="ContentBorder">
+                                                                    <Setter.Value>
+                                                                        <SolidColorBrush Color="#FF174FAD"
+                                                                                         Opacity="0.6"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </MultiTrigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Image Width="42" Source="{Binding XPath=Image}" Stretch="Uniform" Margin="0,0,0,3"/>
+                                                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="{Binding XPath=Head}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.Resources>
+                                        <Popup x:Key="ElementsListViewPopup" Placement="Relative"             
+                                               Name="ElementsPopup" StaysOpen="False"
+                                               Closed="ElementsPopup_Closed">
+                                            <ContentControl>
+                                                <ListView ItemContainerStyle="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemContainerStyle}" 
+                                                          Width="507.5" Height="180" Background="White" 
+                                                          BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0.5"
+                                                          SelectedIndex="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=SelectedIndex}"
+                                                          ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemsSource}"
+                                                          ItemTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemTemplate}"
+                                                          TextOptions.TextRenderingMode="ClearType"
+                                                          RenderOptions.BitmapScalingMode="HighQuality" 
+                                                          RenderOptions.ClearTypeHint="Enabled">
+                                                    <ListView.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ListView.ItemsPanel>
+                                                </ListView>
+                                            </ContentControl>
+                                        </Popup>
+                                    </ListView.Resources>
+                                </ListView>
+                                <Grid Width="13" Panel.ZIndex="1" 
                                           Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}" Margin="-6,0,4,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Button x:Name="UpButton" Style="{StaticResource ResourceKey=ListViewControlButtonStyle}"
+                                            Margin="0,0,0,0" IsEnabled="False" 
+                                            ToolTip="Przewiń listę w górę" Click="Button_Click">
+                                        <Image Margin="3.5">
+                                            <Image.Source>
+                                                <DrawingImage>
+                                                    <DrawingImage.Drawing>
+                                                        <GeometryDrawing Brush="Black">
+                                                            <GeometryDrawing.Pen>
+                                                                <Pen Brush="Black" Thickness="0.25"/>
+                                                            </GeometryDrawing.Pen>
+                                                            <GeometryDrawing.Geometry>
+                                                                <PathGeometry>
+                                                                    <PathFigure StartPoint="5,3">
+                                                                        <LineSegment Point="2.5,0"/>
+                                                                        <LineSegment Point="0,3"/>
+                                                                    </PathFigure>
+                                                                </PathGeometry>
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                    </DrawingImage.Drawing>
+                                                </DrawingImage>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Button x:Name="DownButton" Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" Grid.Row="1"
+                                            Margin="0,-1,0,0" 
+                                            ToolTip="Przewiń listę w dół" Click="Button_Click">
+                                        <Image Margin="3.5">
+                                            <Image.Source>
+                                                <DrawingImage>
+                                                    <DrawingImage.Drawing>
+                                                        <GeometryDrawing Brush="Black">
+                                                            <GeometryDrawing.Pen>
+                                                                <Pen Brush="Black" Thickness="0.25"/>
+                                                            </GeometryDrawing.Pen>
+                                                            <GeometryDrawing.Geometry>
+                                                                <PathGeometry>
+                                                                    <PathFigure StartPoint="5,3">
+                                                                        <LineSegment Point="2.5,6"/>
+                                                                        <LineSegment Point="0,3"/>
+                                                                    </PathFigure>
+                                                                </PathGeometry>
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                    </DrawingImage.Drawing>
+                                                </DrawingImage>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Button x:Name="EjectButton"
+                                            Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" 
+                                            Grid.Row="2" Margin="0,-1,0,0" ToolTip="Rozwiń listę" 
+                                            Click="EjectButton_Click">
+                                        <Image Margin="2.5,0,2.8,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <Image.Source>
+                                                <DrawingImage>
+                                                    <DrawingImage.Drawing>
+                                                        <GeometryDrawing Brush="Black">
+                                                            <GeometryDrawing.Pen>
+                                                                <Pen Brush="Black" LineJoin="Miter" Thickness="0.5"/>
+                                                            </GeometryDrawing.Pen>
+                                                            <GeometryDrawing.Geometry>
+                                                                <PathGeometry>
+                                                                    <PathFigure StartPoint="5,3">
+                                                                        <LineSegment Point="2.5,6"/>
+                                                                        <LineSegment Point="0,3"/>
+                                                                    </PathFigure>
+                                                                    <PathFigure StartPoint="-1,0.5">
+                                                                        <LineSegment Point="6,0.5"/>
+                                                                    </PathFigure>
+                                                                </PathGeometry>
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                    </DrawingImage.Drawing>
+                                                </DrawingImage>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                </Grid>
+                                <Button x:Name="AddButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Wstaw"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/addElement.png"/>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                                <Label Content="Elementy"
+                                       FontSize="10"
+                                       Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
+                              Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                              StrokeThickness="1" Margin="4.5,3,4.5,3"/>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
+                                            Orientation="Horizontal">
+                                <Button x:Name="MoveButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Przenieś"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/moveElement.png"/>
+                                    </Grid>
+                                </Button>
+                                <Button x:Name="CopyButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Kopiuj"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/copyElement.png"/>
+                                    </Grid>
+                                </Button>
+                                <Button x:Name="PasteButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Wklej"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/pasteElement.png"/>
+                                    </Grid>
+                                </Button>
+                                <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=MoveButton, Path=ActualHeight}"
+                                      Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                      StrokeThickness="1" Margin="4.5,10,4.5,6"/>
+                                <Button x:Name="ModifyButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Modyfikuj"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/editElement.png"/>
+                                    </Grid>
+                                </Button>
+                                <Button x:Name="DeleteButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Usuń"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/removeElement.png"/>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                                <Label Content="Edycja"
+                                           FontSize="10"
+                                           Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
+                              Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                              StrokeThickness="1" Margin="4.5,3,4.5,3"/>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Top" Height="60" Margin="0,8,0,1.5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Row="0" Style="{StaticResource ResourceKey=RibbonLongElementButtonStyle}"
+                                            x:Name="FindButton" Grid.Column="0" Grid.ColumnSpan="3" Height="19">
+                                    <Grid VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="1" Content="Znajdź element"/>
+                                        <Image Grid.Column="0" Margin="2,0,0,0" Height="14" Source="Icons/find.png"/>
+                                    </Grid>
+                                </Button>
+                                <Button Grid.Row="1" Style="{StaticResource ResourceKey=RibbonLongElementButtonStyle}"  
+                                        x:Name="ReplaceButton" Grid.Column="0" Grid.ColumnSpan="2" Height="19">
+                                    <Grid VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="1" Content="Zamień"/>
+                                        <Image Grid.Column="0" Margin="2,0,0,0" Height="14" Source="Icons/replace.png"/>
+                                    </Grid>
+                                </Button>
+                                <Button Grid.Row="2" Style="{StaticResource ResourceKey=RibbonLongElementButtonStyle}"
+                                        x:Name="FilterButton" Grid.Column="0" Grid.ColumnSpan="1" Height="19">
+                                    <Grid VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="1" Content="Filtruj"/>
+                                        <Image Grid.Column="0" Margin="2,0,0,0" Height="14" Source="Icons/filter.png"/>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                            <StackPanel DockPanel.Dock="Bottom" Margin="0,-3,0,0"
+                                        HorizontalAlignment="Center">
+                                <Label Content="Szukanie"
+                                       FontSize="10"
+                                       Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
+                              Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                              StrokeThickness="1" Margin="4.5,3,4.5,3"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Visibility="Collapsed" x:Name="ToolsTabItem">
+                    <StackPanel HorizontalAlignment="Left" FlowDirection="LeftToRight" Orientation="Horizontal">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Button x:Name="SimulateButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Button x:Name="UpButton" Style="{StaticResource ResourceKey=ListViewControlButtonStyle}"
-                                                Margin="0,0,0,0" IsEnabled="False" 
-                                                ToolTip="Przewiń listę w górę" Click="Button_Click">
-                                            <Image Margin="3.5">
-                                                <Image.Source>
-                                                    <DrawingImage>
-                                                        <DrawingImage.Drawing>
-                                                            <GeometryDrawing Brush="Black">
-                                                                <GeometryDrawing.Pen>
-                                                                    <Pen Brush="Black" Thickness="0.25"/>
-                                                                </GeometryDrawing.Pen>
-                                                                <GeometryDrawing.Geometry>
-                                                                    <PathGeometry>
-                                                                        <PathFigure StartPoint="5,3">
-                                                                            <LineSegment Point="2.5,0"/>
-                                                                            <LineSegment Point="0,3"/>
-                                                                        </PathFigure>
-                                                                    </PathGeometry>
-                                                                </GeometryDrawing.Geometry>
-                                                            </GeometryDrawing>
-                                                        </DrawingImage.Drawing>
-                                                    </DrawingImage>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button x:Name="DownButton" Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" Grid.Row="1"
-                                                Margin="0,-0.5,0,0" 
-                                                ToolTip="Przewiń listę w dół" Click="Button_Click">
-                                            <Image Margin="3.5">
-                                                <Image.Source>
-                                                    <DrawingImage>
-                                                        <DrawingImage.Drawing>
-                                                            <GeometryDrawing Brush="Black">
-                                                                <GeometryDrawing.Pen>
-                                                                    <Pen Brush="Black" Thickness="0.25"/>
-                                                                </GeometryDrawing.Pen>
-                                                                <GeometryDrawing.Geometry>
-                                                                    <PathGeometry>
-                                                                        <PathFigure StartPoint="5,3">
-                                                                            <LineSegment Point="2.5,6"/>
-                                                                            <LineSegment Point="0,3"/>
-                                                                        </PathFigure>
-                                                                    </PathGeometry>
-                                                                </GeometryDrawing.Geometry>
-                                                            </GeometryDrawing>
-                                                        </DrawingImage.Drawing>
-                                                    </DrawingImage>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button x:Name="EjectButton"
-                                                Style="{StaticResource ResourceKey=ListViewControlButtonStyle}" 
-                                                Grid.Row="2" Margin="0,-0.5,0,0" ToolTip="Rozwiń listę" 
-                                                Click="EjectButton_Click">
-                                            <Image Margin="2.5,0,2.8,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                <Image.Source>
-                                                    <DrawingImage>
-                                                        <DrawingImage.Drawing>
-                                                            <GeometryDrawing Brush="Black">
-                                                                <GeometryDrawing.Pen>
-                                                                    <Pen Brush="Black" LineJoin="Miter" Thickness="0.5"/>
-                                                                </GeometryDrawing.Pen>
-                                                                <GeometryDrawing.Geometry>
-                                                                    <PathGeometry>
-                                                                        <PathFigure StartPoint="5,3">
-                                                                            <LineSegment Point="2.5,6"/>
-                                                                            <LineSegment Point="0,3"/>
-                                                                        </PathFigure>
-                                                                        <PathFigure StartPoint="-1,0.5">
-                                                                            <LineSegment Point="6,0.5"/>
-                                                                        </PathFigure>
-                                                                    </PathGeometry>
-                                                                </GeometryDrawing.Geometry>
-                                                            </GeometryDrawing>
-                                                        </DrawingImage.Drawing>
-                                                    </DrawingImage>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
+                                        <Label Grid.Row="1" Content="Symulacja"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/simulate.png"/>
                                     </Grid>
-                                    <Button x:Name="AddButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Wstaw"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/addElement.png"/>
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                                <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-                                    <Label Content="Elementy"
-                                           FontSize="10"
-                                           Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
-                                </StackPanel>
-                            </DockPanel>
-                            <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
+                                </Button>
+                                <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Dobierz tłumik"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/noiseReduction.png"/>
+                                    </Grid>
+                                </Button>
+                                <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Szybki dobór"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/fastSelection.png"/>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                                <Label Content="Obliczenia"
+                                       FontSize="10"
+                                       Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
                                   Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
-                            <DockPanel>
-                                <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
-                                            Orientation="Horizontal">
-                                    <Button x:Name="MoveButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Przenieś"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/moveElement.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button x:Name="CopyButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Kopiuj"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/copyElement.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button x:Name="PasteButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Wklej"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/pasteElement.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=MoveButton, Path=ActualHeight}"
-                                          Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                          StrokeThickness="0.75" Margin="4,6,4,6"/>
-                                    <Button x:Name="ModifyButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Modyfikuj"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/editElement.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button x:Name="DeleteButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Usuń"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/removeElement.png"/>
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                                <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-                                    <Label Content="Edycja"
-                                           FontSize="10"
-                                           Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
-                                </StackPanel>
-                            </DockPanel>
-                            <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
-                            <DockPanel>
-                                <Grid DockPanel.Dock="Top" Height="60" Margin="0,8,0,1.5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Row="0" Style="{StaticResource ResourceKey=RibbonLongElementButtonStyle}"
-                                            x:Name="FindButton" Grid.Column="0" Grid.ColumnSpan="3" Height="19">
-                                        <Grid VerticalAlignment="Center">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="1" Content="Znajdź element"/>
-                                            <Image Grid.Column="0" Margin="2,0,0,0" Height="14" Source="Icons/find.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Grid.Row="1" Style="{StaticResource ResourceKey=RibbonLongElementButtonStyle}"  
-                                            x:Name="ReplaceButton" Grid.Column="0" Grid.ColumnSpan="2" Height="19">
-                                        <Grid VerticalAlignment="Center">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="1" Content="Zamień"/>
-                                            <Image Grid.Column="0" Margin="2,0,0,0" Height="14" Source="Icons/replace.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Grid.Row="2" Style="{StaticResource ResourceKey=RibbonLongElementButtonStyle}"
-                                            x:Name="FilterButton" Grid.Column="0" Grid.ColumnSpan="1" Height="19">
-                                        <Grid VerticalAlignment="Center">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="1" Content="Filtruj"/>
-                                            <Image Grid.Column="0" Margin="2,0,0,0" Height="14" Source="Icons/filter.png"/>
-                                        </Grid>
-                                    </Button>
-                                </Grid>
-                                <StackPanel DockPanel.Dock="Bottom" Margin="0,-3,0,0"
-                                            HorizontalAlignment="Center">
-                                    <Label Content="Szukanie"
-                                           FontSize="10"
-                                           Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
-                                </StackPanel>
-                            </DockPanel>
-                            <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
-                        </StackPanel>
-                    </TabItem>
-                    <TabItem Visibility="Collapsed" x:Name="ToolsTabItem">
-                        <StackPanel HorizontalAlignment="Left" FlowDirection="LeftToRight" Orientation="Horizontal">
-                            <DockPanel>
-                                <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
-                                            Orientation="Horizontal">
-                                    <Button x:Name="SimulateButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Symulacja"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/simulate.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Dobierz tłumik"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/noiseReduction.png"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Weryfikacja"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/pasteElement.png"/>
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                                <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-                                    <Label Content="Obliczenia"
-                                           FontSize="10"
-                                           Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
-                                </StackPanel>
-                            </DockPanel>
-                            <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
-                            <DockPanel>
-                                <Grid DockPanel.Dock="Top" Height="60" Margin="0,8,0,1.5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <CheckBox Grid.Row="0" Content="Test 1">
-                                    </CheckBox>
-                                    <CheckBox Grid.Row="1" Content="Test 2"  >
-                                    </CheckBox>
-                                    <CheckBox Grid.Row="2" Content="Test 3">
-                                    </CheckBox>
-                                </Grid>
-                                <StackPanel DockPanel.Dock="Bottom" Margin="0,-3,0,0"
-                                            HorizontalAlignment="Center">
-                                    <Label Content="Ustawienia"
-                                           FontSize="10"
-                                           Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
-                                </StackPanel>
-                            </DockPanel>
-                            <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
-                            <DockPanel>
-                                <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
-                                            Orientation="Horizontal" VerticalAlignment="Top">
-                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Label Grid.Row="1" Content="Opcje"/>
-                                            <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/options.png"/>
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                            </DockPanel>
-                            <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                  StrokeThickness="0.75" Margin="4,3,4,3"/>
-                        </StackPanel>
-                    </TabItem>
-                    <TabItem Visibility="Collapsed" x:Name="ResultsTabItem">
-                        <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                  StrokeThickness="1" Margin="4,3,5,3"/>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Top" Height="60" Margin="0,8,0,1.5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Korekcja częstotliwościowa:"
+                                           VerticalAlignment="Top" FontSize="{Binding ElementName=TransmissionLossCheckBox, Path=FontSize}"
+                                           HorizontalAlignment="Left"/>
+                                <ComboBox Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" BorderBrush="{StaticResource MenuBorderColorBrush}" 
+                                          SelectedIndex="0" Width="60" HorizontalAlignment="Right"> 
+                                    <ComboBoxItem Content="Brak"/>
+                                    <ComboBoxItem Content="Filtr A"/>
+                                    <ComboBoxItem Content="Filtr B"/>
+                                    <ComboBoxItem Content="Filtr C"/>
+                                </ComboBox>
+                                <CheckBox x:Name="TransmissionLossCheckBox" Grid.Column="0" Grid.Row="0" Content="Uwzględniaj przenoszenie dźwięku przez ściany kanału"/>
+                                <CheckBox Grid.Column="0" Grid.Row="1" Content="Test 2"/>
+                                <CheckBox Grid.Column="0" Grid.Row="2" Content="Test 3"/>
+                            </Grid>
+                            <StackPanel DockPanel.Dock="Bottom" Margin="0,-3,0,0"
+                                        HorizontalAlignment="Center">
+                                <Label Content="Ustawienia"
+                                       FontSize="10"
+                                       Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
+                              Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                              StrokeThickness="1" Margin="5.5,3,4.5,3"/>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
+                                        Orientation="Horizontal" VerticalAlignment="Top">
+                                <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Opcje"/>
+                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/options.png"/>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                        </DockPanel>
+                        <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
+                              Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                              StrokeThickness="1" Margin="4.5,3,4.5,3"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Visibility="Collapsed" x:Name="ResultsTabItem">
+                    <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
 
-                        </StackPanel>
-                    </TabItem>
-                    <TabControl.Style>
-                        <Style TargetType="TabControl">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=ProjectRadioButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="SelectedIndex" Value="0"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ElementName=ToolsRadioButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="SelectedIndex" Value="1"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ElementName=ResultsRadioButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="SelectedIndex" Value="2"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TabControl.Style>
-                </TabControl>
-            </DockPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabControl.Style>
+                    <Style TargetType="TabControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=ProjectRadioButton, Path=IsChecked}" Value="True">
+                                <Setter Property="SelectedIndex" Value="0"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ToolsRadioButton, Path=IsChecked}" Value="True">
+                                <Setter Property="SelectedIndex" Value="1"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ResultsRadioButton, Path=IsChecked}" Value="True">
+                                <Setter Property="SelectedIndex" Value="2"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabControl.Style>
+            </TabControl>
         </Grid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="Auto"/>

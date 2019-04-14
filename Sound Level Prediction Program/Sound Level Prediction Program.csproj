@@ -177,5 +177,14 @@
   <ItemGroup>
     <Resource Include="Icons\noiseReduction.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\fastSelection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\fileMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\saveMenuBar.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

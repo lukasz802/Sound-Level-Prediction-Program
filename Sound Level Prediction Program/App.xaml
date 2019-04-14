@@ -4,8 +4,10 @@
              xmlns:local="clr-namespace:Sound_Level_Prediction_Program"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="MenuBackgroundColorBrush" Color="{x:Static SystemColors.ControlLightLightColor}"></SolidColorBrush>
-        <SolidColorBrush x:Key="MenuBorderColorBrush" Color="#FF8B8484"></SolidColorBrush>
-        <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656262"></SolidColorBrush>
+        <SolidColorBrush x:Key="MenuBackgroundColorBrush" Color="{x:Static SystemColors.ControlLightLightColor}"/>
+        <SolidColorBrush x:Key="MenuBarBackgroundColorBrush" Color="#FF2F69DC"/>
+        <SolidColorBrush x:Key="MenuBarActiveControlColorBrush" Color="#FF6087D7"/>
+        <SolidColorBrush x:Key="MenuBorderColorBrush" Color="#FF8B8484"/>
+        <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656262"/>
     </Application.Resources>
 </Application>
