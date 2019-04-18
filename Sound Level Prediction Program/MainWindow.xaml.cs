@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Sound_Level_Prediction_Program
 {
@@ -119,6 +108,18 @@ namespace Sound_Level_Prediction_Program
             { elementslistviewCounter = ElementsListView.SelectedIndex; ElementsListView.ScrollIntoView(ElementsListView.SelectedItem); }
             else { elementslistviewCounter = ElementsListView.Items.Count - 5; ElementsListView.ScrollIntoView(ElementsListView.Items[ElementsListView.Items.Count - 1]); }
             ElementsListView_SelectionChanged(ElementsListView, null);
+        }
+
+        private void BandwidthButton_Click(object sender, RoutedEventArgs e)
+        {
+            Popup popup = (Popup)BandwidthButton.FindResource("BandwidthButtonPopup");
+            popup.PlacementTarget = BandwidthButton;
+            popup.IsOpen = true;
+        }
+
+        private void BandwidthPopup_Closed(object sender, EventArgs e)
+        {
+            BandwidthButton.IsChecked = false;
         }
     }
 }

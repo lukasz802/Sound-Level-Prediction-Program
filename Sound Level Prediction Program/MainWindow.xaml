@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sound_Level_Prediction_Program"
         xmlns:t="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:c="clr-namespace:Sound_Level_Prediction_Program.Controls"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Title="Sound Level Prediction Program" SnapsToDevicePixels="True"
@@ -98,8 +99,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Name="Panel" BorderBrush="Transparent" BorderThickness="0.5">
-                            <StackPanel Name="ContentStackPanel" VerticalAlignment="Center" 
-                                        HorizontalAlignment="Center" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
+                            <StackPanel Name="ContentStackPanel" VerticalAlignment="Stretch" 
+                                        HorizontalAlignment="Stretch" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
                                 <ContentPresenter VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   Content="{TemplateBinding Content}"/>
@@ -116,6 +117,52 @@
                                 <Setter TargetName="Panel" Property="BorderBrush" Value="#FF117DF3"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ContentStackPanel" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FF3EA2D4"
+                                                         Opacity="0.25"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Panel" Property="BorderBrush" Value="#FF1A1AB3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RibbonElementToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Name="Panel" BorderBrush="Transparent" BorderThickness="0.5">
+                            <StackPanel Name="ContentStackPanel" VerticalAlignment="Stretch" 
+                                        HorizontalAlignment="Stretch" Background="{StaticResource ResourceKey=MenuBackgroundColorBrush}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Content="{TemplateBinding Content}"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ContentStackPanel" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FF11A6F3"
+                                                         Opacity="0.15"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Panel" Property="BorderBrush" Value="#FF117DF3"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ContentStackPanel" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FF3EA2D4"
+                                                         Opacity="0.25"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Panel" Property="BorderBrush" Value="#FF1A1AB3"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="ContentStackPanel" Property="Background">
                                     <Setter.Value>
                                         <SolidColorBrush Color="#FF3EA2D4"
@@ -240,9 +287,91 @@
                     <Setter Property="Background" Value="{StaticResource MenuBarActiveControlColorBrush}"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#FF3A66BF"/>
+                    <Setter Property="Background" Value="#FF5878BA"/>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+        <Style x:Key="FlatComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                                          Focusable="False"
+                                          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Name="Border" BorderBrush="{StaticResource MenuBorderColorBrush}"
+                                                BorderThickness="0.5" Background="{StaticResource MenuBackgroundColorBrush}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="20"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Viewbox Grid.Column="1" Margin="6.5,0,6.5,4">
+                                                    <Path Stroke="{StaticResource MenuContainerForegroundColorBrush}"
+                                                          StrokeThickness="0.75" StrokeLineJoin="Round"
+                                                          Data="M5,3L2.5,6L0,3"
+                                                          VerticalAlignment="Center"/>
+                                                </Viewbox>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" TargetName="Border">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="#FF11A6F3"
+                                                         Opacity="0.15"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="Border" Value="#FF117DF3"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" TargetName="Border">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="#FF11A6F3"
+                                                         Opacity="0.15"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="Border" Value="#FF117DF3"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="5,3,20,3"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                            <Popup Name="Popup"
+                                   SnapsToDevicePixels="True"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border Name="DropDownBorder"
+                                            Background="{StaticResource MenuBackgroundColorBrush}"
+                                            BorderThickness="0.5"
+                                            BorderBrush="{StaticResource MenuBorderColorBrush}"/>
+                                    <ScrollViewer>
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         <XmlDataProvider x:Key="ElementsLstViewData" XPath="/ListElements">
             <x:XData>
@@ -317,10 +446,10 @@
                     <Viewbox Margin="8,0,8,3" VerticalAlignment="Bottom">
                         <Path Stroke="White" Fill="White" StrokeThickness="1" StrokeLineJoin="Miter" 
                               Data="M56,15l-56,41l56,41v-25h64c22.28125,0 40,17.71875 40,40c0,22.28125 -17.71875,40 -40,40h-120v32h120c39.5625,0 72,-32.4375 72,-72c0,-39.5625 -32.4375,-72 -72,-72h-64z"/>
-                   </Viewbox>
+                    </Viewbox>
                 </Button>
             </StackPanel>
-            <Label HorizontalAlignment="Center" FontSize="11.75" Foreground="White" Content="Sound Level Prediction Program"/>
+            <Label HorizontalAlignment="Center" FontSize="11.75" Foreground="White" Content="{Binding ElementName=mainWindow, Path=Title}"/>
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button x:Name="CloseButton"
                         Click="MenuBarButton_Click"
@@ -404,8 +533,8 @@
                                     <Setter Property="BorderBrush" Value="{StaticResource MenuBarActiveControlColorBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="#FF3A66BF"/>
-                                    <Setter Property="BorderBrush" Value="#FF3A66BF"/>
+                                    <Setter Property="Background" Value="#FF5878BA"/>
+                                    <Setter Property="BorderBrush" Value="#FF5878BA"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -703,12 +832,12 @@
                                                Closed="ElementsPopup_Closed">
                                             <ContentControl>
                                                 <ListView ItemContainerStyle="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemContainerStyle}" 
-                                                          Width="507.5" Height="180" Background="White" 
-                                                          BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                                                          Width="507.5" Height="180" Background="White" BorderBrush="LightGray"
                                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0.5"
                                                           SelectedIndex="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=SelectedIndex}"
                                                           ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemsSource}"
                                                           ItemTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=ItemTemplate}"
+                                                          SnapsToDevicePixels="True"
                                                           TextOptions.TextRenderingMode="ClearType"
                                                           RenderOptions.BitmapScalingMode="HighQuality" 
                                                           RenderOptions.ClearTypeHint="Enabled">
@@ -816,7 +945,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Wstaw"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/addElement.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/addElement.png"/>
                                     </Grid>
                                 </Button>
                             </StackPanel>
@@ -839,7 +968,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Przenieś"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/moveElement.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/moveElement.png"/>
                                     </Grid>
                                 </Button>
                                 <Button x:Name="CopyButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
@@ -849,7 +978,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Kopiuj"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/copyElement.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/copyElement.png"/>
                                     </Grid>
                                 </Button>
                                 <Button x:Name="PasteButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
@@ -859,7 +988,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Wklej"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/pasteElement.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/pasteElement.png"/>
                                     </Grid>
                                 </Button>
                                 <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=MoveButton, Path=ActualHeight}"
@@ -872,7 +1001,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Modyfikuj"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/editElement.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/editElement.png"/>
                                     </Grid>
                                 </Button>
                                 <Button x:Name="DeleteButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
@@ -882,7 +1011,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Usuń"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/removeElement.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/removeElement.png"/>
                                     </Grid>
                                 </Button>
                             </StackPanel>
@@ -896,7 +1025,7 @@
                               Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
                               StrokeThickness="1" Margin="4.5,3,4.5,3"/>
                         <DockPanel>
-                            <Grid DockPanel.Dock="Top" Height="60" Margin="0,8,0,1.5">
+                            <Grid DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -941,7 +1070,7 @@
                                     </Grid>
                                 </Button>
                             </Grid>
-                            <StackPanel DockPanel.Dock="Bottom" Margin="0,-3,0,0"
+                            <StackPanel DockPanel.Dock="Bottom"
                                         HorizontalAlignment="Center">
                                 <Label Content="Szukanie"
                                        FontSize="10"
@@ -963,10 +1092,9 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                             <RowDefinition/>
-                                            <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Symulacja"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/simulate.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/simulate.png"/>
                                     </Grid>
                                 </Button>
                                 <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
@@ -976,7 +1104,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Dobierz tłumik"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/noiseReduction.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/noiseReduction.png"/>
                                     </Grid>
                                 </Button>
                                 <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
@@ -986,7 +1114,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Szybki dobór"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/fastSelection.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/fastSelection.png"/>
                                     </Grid>
                                 </Button>
                             </StackPanel>
@@ -997,34 +1125,129 @@
                             </StackPanel>
                         </DockPanel>
                         <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
-                                  Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                                  StrokeThickness="1" Margin="4,3,5,3"/>
+                              Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                              StrokeThickness="1" Margin="4,3,5,3"/>
                         <DockPanel>
-                            <Grid DockPanel.Dock="Top" Height="60" Margin="0,8,0,1.5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                            <Grid DockPanel.Dock="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Korekcja częstotliwościowa:"
-                                           VerticalAlignment="Top" FontSize="{Binding ElementName=TransmissionLossCheckBox, Path=FontSize}"
-                                           HorizontalAlignment="Left"/>
-                                <ComboBox Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" BorderBrush="{StaticResource MenuBorderColorBrush}" 
-                                          SelectedIndex="0" Width="60" HorizontalAlignment="Right"> 
-                                    <ComboBoxItem Content="Brak"/>
-                                    <ComboBoxItem Content="Filtr A"/>
-                                    <ComboBoxItem Content="Filtr B"/>
-                                    <ComboBoxItem Content="Filtr C"/>
-                                </ComboBox>
-                                <CheckBox x:Name="TransmissionLossCheckBox" Grid.Column="0" Grid.Row="0" Content="Uwzględniaj przenoszenie dźwięku przez ściany kanału"/>
-                                <CheckBox Grid.Column="0" Grid.Row="1" Content="Test 2"/>
-                                <CheckBox Grid.Column="0" Grid.Row="2" Content="Test 3"/>
+                                <DockPanel Grid.Column="0" Margin="0,0,3,0">
+                                    <Grid DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox x:Name="TransmissionLossCheckBox" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"
+                                                  Content="Uwzględniaj przenoszenie dźwięku przez ściany kanału"/>
+                                        <CheckBox x:Name="BandwidthCheckBox" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" 
+                                                  Content="Analizuj tylko wybrany zakres pasm oktawowych"/>
+                                        <Grid Grid.Column="0" Grid.Row="2" Margin="5,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Korekcja częstotliwościowa:"
+                                                       VerticalAlignment="Center" FontSize="{Binding ElementName=TransmissionLossCheckBox, Path=FontSize}"
+                                                       HorizontalAlignment="Left"/>
+                                            <ComboBox x:Name="FilterComboBox" Grid.Column="1" Style="{StaticResource ResourceKey=FlatComboBoxStyle}" 
+                                                      SelectedIndex="1" Width="60" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                <ComboBoxItem Content="Brak"/>
+                                                <ComboBoxItem Content="Filtr A"/>
+                                                <ComboBoxItem Content="Filtr B"/>
+                                                <ComboBoxItem Content="Filtr C"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Grid>
+                                </DockPanel>
+                                <DockPanel Grid.Column="1">
+                                    <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,3,0,1.5" HorizontalAlignment="Center"
+                                                Orientation="Horizontal" VerticalAlignment="Top">
+                                        <ToggleButton x:Name="BandwidthButton" Style="{StaticResource ResourceKey=RibbonElementToggleButtonStyle}"
+                                                Click="BandwidthButton_Click" >
+                                            <Grid VerticalAlignment="Bottom">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Row="1" Content="Pasma oktawowe"/>
+                                                <Image Grid.Row="0" Margin="0,5,0,-5" Height="30" Source="Icons/bandwidth.png"/>
+                                                <Image Grid.Row="2" Margin="2.5,-2.5,2.5,0">
+                                                    <Image.Source>
+                                                        <DrawingImage>
+                                                            <DrawingImage.Drawing>
+                                                                <GeometryDrawing Brush="Black">
+                                                                    <GeometryDrawing.Pen>
+                                                                        <Pen Brush="Black" Thickness="0.25"/>
+                                                                    </GeometryDrawing.Pen>
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <PathGeometry>
+                                                                            <PathFigure StartPoint="5,3">
+                                                                                <LineSegment Point="2.5,6"/>
+                                                                                <LineSegment Point="0,3"/>
+                                                                            </PathFigure>
+                                                                        </PathGeometry>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                            </DrawingImage.Drawing>
+                                                        </DrawingImage>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Grid>
+                                            <ToggleButton.Resources>
+                                                <Popup x:Key="BandwidthButtonPopup" Placement="Bottom" Closed="BandwidthPopup_Closed"            
+                                                       Name="BandwidthPopup" StaysOpen="False">
+                                                    <ContentControl>
+                                                        <Border Width="305" Background="White"
+                                                                BorderThickness="0.5" BorderBrush="LightGray"                                                                         SnapsToDevicePixels="True"
+                                                                TextOptions.TextRenderingMode="ClearType"
+                                                                RenderOptions.BitmapScalingMode="HighQuality" 
+                                                                RenderOptions.ClearTypeHint="Enabled">
+                                                            <StackPanel Orientation="Vertical" Margin="2.5,0,2.5,2.5">
+                                                                <Label Content="Zakres częstotliwości [Hz]" HorizontalAlignment="Center"/>
+                                                                <c:RangeSlider x:Name="BandwidhSlider" Minimum="0" Maximum="7" VerticalAlignment="Center" 
+                                                                               Margin="10,2.5,10,0" Grid.Column="1" Grid.Row="2" TrackBackground="#FFDDD8D8"
+                                                                               ValueTrackBackground="{StaticResource MenuBarBackgroundColorBrush}" 
+                                                                               ThumbBackground="{StaticResource MenuBarBackgroundColorBrush}"
+                                                                               LowerValue="0" UpperValue="7">
+                                                                </c:RangeSlider>
+                                                                <Grid Margin="-8,0,-8,0">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                        <ColumnDefinition Width="39.5"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Label Content="63" HorizontalAlignment="Center" Grid.Column="0"/>
+                                                                    <Label Content="125" HorizontalAlignment="Center" Grid.Column="1"/>
+                                                                    <Label Content="250" HorizontalAlignment="Center" Grid.Column="2"/>
+                                                                    <Label Content="500" HorizontalAlignment="Center" Grid.Column="3"/>
+                                                                    <Label Content="1k" HorizontalAlignment="Center" Grid.Column="4"/>
+                                                                    <Label Content="2k" HorizontalAlignment="Center" Grid.Column="5"/>
+                                                                    <Label Content="4k" HorizontalAlignment="Center" Grid.Column="6"/>
+                                                                    <Label Content="8k" HorizontalAlignment="Center" Grid.Column="7"/>
+                                                                </Grid>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </ContentControl>
+                                                </Popup>
+                                            </ToggleButton.Resources>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                </DockPanel>
                             </Grid>
-                            <StackPanel DockPanel.Dock="Bottom" Margin="0,-3,0,0"
+                            <StackPanel DockPanel.Dock="Bottom"
                                         HorizontalAlignment="Center">
                                 <Label Content="Ustawienia"
                                        FontSize="10"
@@ -1033,7 +1256,32 @@
                         </DockPanel>
                         <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
                               Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                              StrokeThickness="1" Margin="5.5,3,4.5,3"/>
+                              StrokeThickness="1" Margin="4.5,3,4.5,3"/>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Button x:Name="CalcButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Content="Kalkulator"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/calculator.png"/>
+                                    </Grid>
+                                </Button>
+                                </StackPanel>
+                            <StackPanel DockPanel.Dock="Bottom"
+                                        HorizontalAlignment="Center">
+                                <Label Content="Dodatki"
+                                       FontSize="10"
+                                       Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
+                              Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
+                              StrokeThickness="1" Margin="4.5,3,4.5,3"/>
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
                                         Orientation="Horizontal" VerticalAlignment="Top">
@@ -1044,7 +1292,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Opcje"/>
-                                        <Image Grid.Row="0" Margin="0,10,0,-3" Height="35" Source="Icons/options.png"/>
+                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/options.png"/>
                                     </Grid>
                                 </Button>
                             </StackPanel>

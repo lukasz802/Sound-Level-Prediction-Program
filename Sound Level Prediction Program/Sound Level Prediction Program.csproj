@@ -82,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\RangeSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +95,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviours\DropDownButton.cs" />
+    <Compile Include="Controls\RangeSlider.xaml.cs">
+      <DependentUpon>RangeSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -185,6 +192,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\saveMenuBar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\bandwidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\calculator.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
