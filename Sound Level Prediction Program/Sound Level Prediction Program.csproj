@@ -82,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AutoHidableDockPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\RangeSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -94,7 +98,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\AutoGrayableImage.cs" />
     <Compile Include="Behaviours\DropDownButton.cs" />
+    <Compile Include="Controls\AutoHidableDockPanel.xaml.cs">
+      <DependentUpon>AutoHidableDockPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RangeSlider.xaml.cs">
       <DependentUpon>RangeSlider.xaml</DependentUpon>
     </Compile>
@@ -198,6 +206,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\calculator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\chart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\printReport.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\findBig.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

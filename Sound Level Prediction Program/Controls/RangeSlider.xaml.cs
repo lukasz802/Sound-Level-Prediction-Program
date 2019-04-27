@@ -20,6 +20,11 @@ namespace Sound_Level_Prediction_Program.Controls
         private Thickness _margin;
         private RoutedEventArgs _args;
 
+        protected override void OnContentChanged(object oldContent, object newContent)
+        {
+            if (oldContent != null) { throw new InvalidOperationException("You cannot change a content of this control"); }
+        }
+        
         private void OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             e.Handled = true;
@@ -27,7 +32,7 @@ namespace Sound_Level_Prediction_Program.Controls
             RaiseEvent(_args);
         }
 
-        void RangeSlider_Loaded(object sender, RoutedEventArgs e)
+        private void RangeSlider_Loaded(object sender, RoutedEventArgs e)
         {
             LowerSlider.ValueChanged += LowerSlider_ValueChanged;
             UpperSlider.ValueChanged += UpperSlider_ValueChanged;
