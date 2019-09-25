@@ -15,6 +15,7 @@ namespace Sound_Level_Prediction_Program.Controls
             InitializeComponent();
             this.Loaded += RangeSlider_Loaded;
             _margin = new Thickness(0);
+            this.Minimum = this.Maximum = 0;
         }
 
         private Thickness _margin;
@@ -80,7 +81,17 @@ namespace Sound_Level_Prediction_Program.Controls
             set { SetValue(LowerValueProperty, value); }
         }
 
-        private static object OnCoerceLowerValueProperty(DependencyObject sender, object data)
+        public static readonly DependencyProperty LowerValueProperty =
+            DependencyProperty.Register("LowerValue", typeof(double), typeof(RangeSlider),
+            new FrameworkPropertyMetadata(propertyChangedCallback: null, coerceValueCallback: OnCoerceValueProperty));
+
+        public double UpperValue
+        {
+            get { return (double)GetValue(UpperValueProperty); }
+            set { SetValue(UpperValueProperty, value); }
+        }
+
+        private static object OnCoerceValueProperty(DependencyObject sender, object data)
         {
             RangeSlider rangeSlider = (RangeSlider)sender;
             double current = (double)data;
@@ -90,29 +101,9 @@ namespace Sound_Level_Prediction_Program.Controls
             return current;
         }
 
-        public static readonly DependencyProperty LowerValueProperty =
-            DependencyProperty.Register("LowerValue", typeof(double), typeof(RangeSlider),
-            new FrameworkPropertyMetadata(propertyChangedCallback: null, coerceValueCallback: OnCoerceLowerValueProperty));
-
-        public double UpperValue
-        {
-            get { return (double)GetValue(UpperValueProperty); }
-            set { SetValue(UpperValueProperty, value); }
-        }
-
-        private static object OnCoerceUpperValueProperty(DependencyObject sender, object data)
-        {
-            RangeSlider rangeSlider = (RangeSlider)sender;
-            double current = (double)data;
-
-            if (current < rangeSlider.LowerValue) { current = rangeSlider.LowerValue; }
-            if (current > rangeSlider.Maximum) { current = rangeSlider.Maximum; }
-            return current;
-        }
-
         public static readonly DependencyProperty UpperValueProperty =
             DependencyProperty.Register("UpperValue", typeof(double), typeof(RangeSlider),
-            new FrameworkPropertyMetadata(propertyChangedCallback: null, coerceValueCallback: OnCoerceUpperValueProperty));
+            new FrameworkPropertyMetadata(propertyChangedCallback: null, coerceValueCallback: OnCoerceValueProperty));
 
         public double Maximum
         {

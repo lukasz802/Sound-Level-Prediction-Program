@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Sound_Level_Prediction_Program.Controls;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Linq;
+using Sound_Level_Prediction_Program.ViewModels;
 
 namespace Sound_Level_Prediction_Program
 {
@@ -11,10 +15,14 @@ namespace Sound_Level_Prediction_Program
     public partial class MainWindow : Window
     {
         private static int elementslistviewCounter = 4;
+        private static ToggleButton tempToggleButton = null;
+
+        private MainWindowViewModel viewModel = new MainWindowViewModel();
 
         public MainWindow()
         {
             InitializeComponent();
+            this.Loaded += (s, e) => { this.DataContext = this.viewModel; };
             ElementsListView.SelectionChanged += ElementsListView_SelectionChanged;
         }
 
@@ -110,16 +118,24 @@ namespace Sound_Level_Prediction_Program
             ElementsListView_SelectionChanged(ElementsListView, null);
         }
 
-        private void BandwidthButton_Click(object sender, RoutedEventArgs e)
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            Popup popup = (Popup)BandwidthButton.FindResource("BandwidthButtonPopup");
-            popup.PlacementTarget = BandwidthButton;
+            ToggleButton btn = sender as ToggleButton;
+            tempToggleButton = btn;
+            Popup popup = (from FrameworkElement fwe in btn.Resources.Values
+                           where fwe is Popup select fwe).FirstOrDefault() as Popup;
+            popup.PlacementTarget = btn;
             popup.IsOpen = true;
         }
 
-        private void BandwidthPopup_Closed(object sender, EventArgs e)
+        private void Popup_Closed(object sender, EventArgs e)
         {
-            BandwidthButton.IsChecked = false;
+            Popup btn = sender as Popup;
+
+            if (tempToggleButton != null)
+            {
+                tempToggleButton.IsChecked = false;
+            }
         }
     }
 }

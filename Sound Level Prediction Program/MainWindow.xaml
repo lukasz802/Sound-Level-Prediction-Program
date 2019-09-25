@@ -39,7 +39,7 @@
                     <ControlTemplate TargetType="Window">
                         <Border TextOptions.TextRenderingMode="ClearType"
                                 RenderOptions.BitmapScalingMode="HighQuality" 
-                                RenderOptions.ClearTypeHint="Enabled" 
+                                RenderOptions.ClearTypeHint="Enabled"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -698,39 +698,47 @@
                         <ContextMenu Background="{StaticResource MenuBackgroundColorBrush}" FontSize="11">
                             <MenuItem Header="Nowy projekt" InputGestureText="Ctrl+N">
                                 <MenuItem.Icon>
-                                    <Image Height="14.7"
-                                               Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                                               Source="Icons/newProject.png"/>
+                                    <Image Height="15.7"
+                                           Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                                           Source="Icons/newProject.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem Header="Otwórz">
                                 <MenuItem.Icon>
-                                    <Image Height="14.7"
-                                               Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                                               Source="Icons/open.png"/>
+                                    <Image Height="15.7"
+                                           Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                                           Source="Icons/open.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <Separator Margin="0,4"/>
                             <MenuItem Header="Zapisz" InputGestureText="Ctrl+S">
                                 <MenuItem.Icon>
-                                    <Image Height="14.7"
-                                               Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                                               Source="Icons/save.png"/>
+                                    <Image Height="15.7"
+                                           Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                                           Source="Icons/save.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem Header="Zapisz jako..." InputGestureText="Ctrl+Shift+S">
                                 <MenuItem.Icon>
-                                    <Image Height="14.7"
-                                               Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                                               Source="Icons/saveAs.png"/>
+                                    <Image Height="15.7"
+                                           Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                                           Source="Icons/saveAs.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <Separator Margin="0,4"/>
-                            <MenuItem Header="Zakończ" InputGestureText="Alt+F4">
+                            <MenuItem Header="Informacje">
                                 <MenuItem.Icon>
-                                    <Image Height="14.7"
-                                               Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                                               Source="Icons/shutdown.png"/>
+                                    <Image Height="15.7"
+                                           Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                                           Source="Icons/info.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator Margin="0,4"/>
+                            <MenuItem Header="Zakończ" InputGestureText="Alt+F4" Command="{Binding CloseAppCommand}">
+                                <MenuItem.Icon>
+                                    <Image Height="15.7"
+                                           Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                                           Source="Icons/shutdown.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                         </ContextMenu>
@@ -751,7 +759,7 @@
                     <StackPanel HorizontalAlignment="Left" FlowDirection="LeftToRight" Orientation="Horizontal">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
-                                            Orientation="Horizontal">
+                                        Orientation="Horizontal">
                                 <ListView x:Name="ElementsListView" Width="495" Background="White" 
                                           BorderBrush="{StaticResource ResourceKey=MenuBorderColorBrush}"
                                           ItemsSource="{Binding Source={StaticResource ElementsLstViewData}, XPath=ListViewItem}"
@@ -954,7 +962,13 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="1" Content="Wstaw"/>
-                                        <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/addElement.png"/>
+                                        <Viewbox Margin="0,5,1,-3" Grid.Row="0" Height="35">
+                                            <Grid Margin="1.5">
+                                                <Path Fill="#FF49C849" Data="M9.675,9.675h152.65v152.65h-152.65z"/>
+                                                <Path Fill="Green" Data="M161.25,10.75v150.5h-150.5v-150.5h150.5M163.4,8.6h-154.8v154.8h154.8v-154.8z"/>
+                                                <Path Fill="White" Data="M80.625,134.375v-43h-43v-10.75h43v-43h10.75v43h43v10.75h-43v43z"/>
+                                            </Grid>
+                                        </Viewbox>
                                     </Grid>
                                 </Button>
                             </StackPanel>
@@ -966,8 +980,8 @@
                         </DockPanel>
                         <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
                               Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                              StrokeThickness="1" Margin="4.5,3,4.5,3"/>
-                        <c:AutoHidableDockPanel RelativeVisibilityLimit="0.12">
+                              StrokeThickness="1" Margin="5,3,5,3"/>
+                        <c:AutoHidableDockPanel RelativeVisibilityLimit="0.11">
                             <c:AutoHidableDockPanel.MainContent>
                                 <DockPanel>
                                     <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
@@ -979,7 +993,12 @@
                                                     <RowDefinition/>
                                                 </Grid.RowDefinitions>
                                                 <Label Grid.Row="1" Content="Przenieś"/>
-                                                <Image Grid.Row="0" Margin="0,5,0,-3" Height="35" Source="Icons/moveElement.png"/>
+                                                <Viewbox Margin="0,5,1,-3" Grid.Row="0" Height="35">
+                                                    <Grid>
+                                                        <Path Fill="Black" Data="M45 24L38 17 38 31zM3 24L10 31 10 17zM31 10L24 3 17 10zM31 38L24 45 17 38z"/>
+                                                        <Path Fill="Black" Data="M22 30H26V41H22zM22 7H26V18H22zM6 22H18V26H6zM30 22H42V26H30z"/>
+                                                    </Grid>
+                                                </Viewbox>
                                             </Grid>
                                         </Button>
                                         <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
@@ -1036,26 +1055,26 @@
                             <c:AutoHidableDockPanel.CollapsedContent>
                                 <StackPanel DockPanel.Dock="Top" Height="65" Margin="0,8,0,0" HorizontalAlignment="Center"
                                             Orientation="Horizontal" VerticalAlignment="Top">
-                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}"
-                                            Margin="1,0,1,0">
-                                        <Grid VerticalAlignment="Bottom">
+                                    <ToggleButton Style="{StaticResource ResourceKey=RibbonElementToggleButtonStyle}"
+                                                  Margin="1,0,1,0" Click="ToggleButton_Click">
+                                        <Grid VerticalAlignment="Bottom" Margin="3,0,3,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Label Grid.Row="1" Margin="0,3,0,0"
-                                                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" 
-                                                   Content="Szukanie"/>
+                                                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=Foreground}" 
+                                                   Content="Edycja"/>
                                             <Image Grid.Row="0" Margin="0,5,0,-5" Height="30" Source="Icons/editElement.png"/>
                                             <Image Grid.Row="2" SnapsToDevicePixels="False" 
                                                    Margin="2.5,-2.5,2.5,0">
                                                 <Image.Source>
                                                     <DrawingImage>
                                                         <DrawingImage.Drawing>
-                                                            <GeometryDrawing Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}">
+                                                            <GeometryDrawing Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=Foreground}">
                                                                 <GeometryDrawing.Pen>
-                                                                    <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}"
+                                                                    <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=Foreground}"
                                                                          Thickness="0.25"/>
                                                                 </GeometryDrawing.Pen>
                                                                 <GeometryDrawing.Geometry>
@@ -1072,13 +1091,116 @@
                                                 </Image.Source>
                                             </Image>
                                         </Grid>
-                                    </Button>
+                                        <ToggleButton.Resources>
+                                            <Popup x:Key="AutoHidableDockPanelPopup" Placement="Bottom"            
+                                                   StaysOpen="False" Closed="Popup_Closed">
+                                                <ContentControl>
+                                                    <Border Background="White"
+                                                            BorderThickness="0.5" BorderBrush="LightGray"      
+                                                            SnapsToDevicePixels="True"
+                                                            TextOptions.TextRenderingMode="ClearType"
+                                                            RenderOptions.BitmapScalingMode="HighQuality" 
+                                                            RenderOptions.ClearTypeHint="Enabled">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                </Grid.RowDefinitions>
+                                                                <Grid Grid.Row="0" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="60"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Przenieś"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Viewbox Grid.Column="0" Margin="4,0,0,0"
+                                                                                     Height="20" Width="20">
+                                                                                <Grid>
+                                                                                    <Path Fill="Black" Data="M45 24L38 17 38 31zM3 24L10 31 10 17zM31 10L24 3 17 10zM31 38L24 45 17 38z"/>
+                                                                                    <Path Fill="Black" Data="M22 30H26V41H22zM22 7H26V18H22zM6 22H18V26H6zM30 22H42V26H30z"/>
+                                                                                </Grid>
+                                                                            </Viewbox>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Grid Grid.Row="1" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="60"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Kopiuj"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Image Grid.Column="0" Margin="4,0,0,0" Height="20" Source="Icons/copyElement.png"
+                                                                                   Width="20"/>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Grid Grid.Row="2" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="60"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Wklej"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Image Grid.Column="0" Margin="4,0,0,0" Height="20" Source="Icons/pasteElement.png"
+                                                                                   Width="20"/>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Grid Grid.Row="3" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="60"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Modyfikuj"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Image Grid.Column="0" Margin="4,0,0,0" Height="16.5" Source="Icons/editElement.png"
+                                                                                   Width="20"/>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Grid Grid.Row="4" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="60"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Usuń"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Image Grid.Column="0" Margin="4,0,0,0" Height="16.5" Source="Icons/removeElement.png"
+                                                                                   Width="20"/>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Label Content="Edycja" Margin="0,0,0,-2" FontSize="10" Grid.Row="5" HorizontalAlignment="Center"
+                                                                       Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </ContentControl>
+                                            </Popup>
+                                        </ToggleButton.Resources>
+                                    </ToggleButton>
                                 </StackPanel>
                             </c:AutoHidableDockPanel.CollapsedContent>
                         </c:AutoHidableDockPanel>
                         <Line X1="0" X2="0" Y1="0" Y2="{Binding ElementName=mainTabControl, Path=ActualHeight}"
                               Stroke="{StaticResource ResourceKey=MenuBorderColorBrush}"
-                              StrokeThickness="1.1" Margin="5,3,5,3"/>
+                              StrokeThickness="1.1" Margin="5,3,5.5,3"/>
                         <c:AutoHidableDockPanel RelativeVisibilityLimit="0.07">
                             <c:AutoHidableDockPanel.MainContent>
                                 <StackPanel Orientation="Vertical">
@@ -1138,8 +1260,8 @@
                             <c:AutoHidableDockPanel.CollapsedContent>
                                 <StackPanel DockPanel.Dock="Top" Height="65" Margin="0,8,0,0" HorizontalAlignment="Center"
                                             Orientation="Horizontal" VerticalAlignment="Top">
-                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}"
-                                             Margin="0.5,0,0.5,0">
+                                    <ToggleButton Style="{StaticResource ResourceKey=RibbonElementToggleButtonStyle}"
+                                                  Margin="0.5,0,0.5,0" Click="ToggleButton_Click">
                                         <Grid VerticalAlignment="Bottom">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
@@ -1147,7 +1269,7 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Label Grid.Row="1" Margin="0,3,0,0"
-                                                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" 
+                                                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=Foreground}" 
                                                    Content="Szukanie"/>
                                             <Image Grid.Row="0" Margin="0,5,0,-5" Height="30" Source="Icons/findBig.png"/>
                                             <Image Grid.Row="2" SnapsToDevicePixels="False" 
@@ -1155,9 +1277,9 @@
                                                 <Image.Source>
                                                     <DrawingImage>
                                                         <DrawingImage.Drawing>
-                                                            <GeometryDrawing Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}">
+                                                            <GeometryDrawing Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=Foreground}">
                                                                 <GeometryDrawing.Pen>
-                                                                    <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}"
+                                                                    <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=Foreground}"
                                                                          Thickness="0.25"/>
                                                                 </GeometryDrawing.Pen>
                                                                 <GeometryDrawing.Geometry>
@@ -1174,7 +1296,75 @@
                                                 </Image.Source>
                                             </Image>
                                         </Grid>
-                                    </Button>
+                                        <ToggleButton.Resources>
+                                            <Popup x:Key="AutoHidableDockPanelPopup" Placement="Bottom"            
+                                                   StaysOpen="False" Closed="Popup_Closed">
+                                                <ContentControl>
+                                                    <Border Background="White"
+                                                            BorderThickness="0.5" BorderBrush="LightGray"      
+                                                            SnapsToDevicePixels="True"
+                                                            TextOptions.TextRenderingMode="ClearType"
+                                                            RenderOptions.BitmapScalingMode="HighQuality" 
+                                                            RenderOptions.ClearTypeHint="Enabled">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                    <RowDefinition/>
+                                                                </Grid.RowDefinitions>
+                                                                <Grid Grid.Row="0" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="50"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Szukaj"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Image Grid.Column="0" Margin="4,0,0,0" Height="16.5" Source="Icons/find.png"
+                                                                                   Width="20"/>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Grid Grid.Row="1" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="50"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Zamień"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Image Grid.Column="0" Margin="4,0,0,0" Height="16.5" Source="Icons/replace.png"
+                                                                                   Width="20"/>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Grid Grid.Row="2" HorizontalAlignment="Left">
+                                                                    <Button Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                                                        <Grid Margin="0,0,3,0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="50"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Label Grid.Column="1" Content="Filtruj"
+                                                                                   VerticalAlignment="Center"/>
+                                                                            <Image Grid.Column="0" Margin="4,0,0,0" Height="16.5" Source="Icons/filter.png"
+                                                                                   Width="20"/>
+                                                                        </Grid>
+                                                                    </Button>
+                                                                </Grid>
+                                                                <Label Content="Szukanie" Margin="0,0,0,-2" FontSize="10" Grid.Row="3" HorizontalAlignment="Center"
+                                                                       Foreground="{StaticResource ResourceKey=MenuContainerForegroundColorBrush}"/>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </ContentControl>
+                                            </Popup>
+                                        </ToggleButton.Resources>
+                                    </ToggleButton>
                                 </StackPanel>
                             </c:AutoHidableDockPanel.CollapsedContent>
                         </c:AutoHidableDockPanel>
@@ -1271,7 +1461,7 @@
                                     <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,3,0,1.5" HorizontalAlignment="Center"
                                                 Orientation="Horizontal" VerticalAlignment="Top">
                                         <ToggleButton x:Name="BandwidthButton" Style="{StaticResource ResourceKey=RibbonElementToggleButtonStyle}"
-                                                      Click="BandwidthButton_Click">
+                                                      Click="ToggleButton_Click">
                                             <Grid VerticalAlignment="Bottom">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition/>
@@ -1307,7 +1497,7 @@
                                                 </Image>
                                             </Grid>
                                             <ToggleButton.Resources>
-                                                <Popup x:Key="BandwidthButtonPopup" Placement="Bottom" Closed="BandwidthPopup_Closed"            
+                                                <Popup x:Key="BandwidthButtonPopup" Placement="Bottom" Closed="Popup_Closed"            
                                                        Name="BandwidthPopup" StaysOpen="False">
                                                     <ContentControl>
                                                         <Border Width="305" Background="White"
@@ -1318,7 +1508,7 @@
                                                                 RenderOptions.ClearTypeHint="Enabled">
                                                             <StackPanel Orientation="Vertical" Margin="2.5,0,2.5,2.5">
                                                                 <Label Content="Zakres częstotliwości [Hz]" HorizontalAlignment="Center"/>
-                                                                <c:RangeSlider x:Name="BandwidhSlider" Minimum="0" Maximum="7" VerticalAlignment="Center" 
+                                                                <c:RangeSlider x:Name="BandwidthSlider" Minimum="0" Maximum="7" VerticalAlignment="Center" 
                                                                                Margin="10,10,10,0" Grid.Column="1" Grid.Row="2" TrackBackground="#FFDDD8D8"
                                                                                ValueTrackBackground="{StaticResource MenuBarBackgroundColorBrush}" 
                                                                                ThumbBackground="{StaticResource MenuBarBackgroundColorBrush}"
@@ -1365,7 +1555,8 @@
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Height="60" Margin="0,5,0,1.5" HorizontalAlignment="Center"
                                         Orientation="Horizontal">
-                                <Button x:Name="CalcButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}">
+                                <Button x:Name="CalcButton" Style="{StaticResource ResourceKey=RibbonElementButtonStyle}"
+                                        Command="{Binding ShowCalcdBCommand}">
                                     <Grid VerticalAlignment="Bottom">
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>

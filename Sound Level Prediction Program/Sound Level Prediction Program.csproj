@@ -34,6 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Compute_Engine">
       <HintPath>..\..\Compute_Engine\Compute_Engine\bin\Debug\Compute_Engine.dll</HintPath>
@@ -82,6 +86,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\FullFitListBox.cs" />
+    <Compile Include="RelayCommand.cs" />
+    <Compile Include="ViewModels\CalcdBViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Windows\CalcdBWindow.xaml.cs">
+      <DependentUpon>CalcdBWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\AutoHidableDockPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -110,6 +121,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\CalcdBWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -146,7 +161,6 @@
     <Resource Include="Icons\shutdown.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\addElement.png" />
     <Resource Include="Icons\options.png" />
     <Resource Include="Icons\removeElement.png" />
   </ItemGroup>
@@ -158,9 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\pasteElement.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\moveElement.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\bow.png" />
@@ -215,6 +226,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\findBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\calculator_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
