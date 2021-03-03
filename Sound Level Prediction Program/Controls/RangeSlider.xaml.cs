@@ -2,8 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
-namespace Sound_Level_Prediction_Program.Controls
+namespace SoundLevelCalculator.Controls
 {
     /// <summary>
     /// Logika interakcji dla klasy RangeSlider.xaml
@@ -13,9 +14,10 @@ namespace Sound_Level_Prediction_Program.Controls
         public RangeSlider()
         {
             InitializeComponent();
-            this.Loaded += RangeSlider_Loaded;
             _margin = new Thickness(0);
             this.Minimum = this.Maximum = 0;
+            this.ThumbHeight = 18;
+            this.Loaded += RangeSlider_Loaded;
         }
 
         private Thickness _margin;
@@ -25,7 +27,7 @@ namespace Sound_Level_Prediction_Program.Controls
         {
             if (oldContent != null) { throw new InvalidOperationException("You cannot change a content of this control"); }
         }
-        
+
         private void OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             e.Handled = true;
@@ -67,6 +69,25 @@ namespace Sound_Level_Prediction_Program.Controls
             new FrameworkPropertyMetadata(propertyChangedCallback: null, coerceValueCallback: OnCoerceMinimumProperty));
 
         private static object OnCoerceMinimumProperty(DependencyObject sender, object data)
+        {
+            RangeSlider rangeSlider = (RangeSlider)sender;
+            double current = (double)data;
+
+            if (current < 0) { current = 0; }
+            return current;
+        }
+
+        public double ThumbHeight
+        {
+            get { return (double)GetValue(ThumbHeightProperty); }
+            set { SetValue(ThumbHeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty ThumbHeightProperty =
+            DependencyProperty.Register("ThumbHeight", typeof(double), typeof(RangeSlider),
+            new FrameworkPropertyMetadata(propertyChangedCallback: null, coerceValueCallback: OnThumbHeightProperty));
+
+        private static object OnThumbHeightProperty(DependencyObject sender, object data)
         {
             RangeSlider rangeSlider = (RangeSlider)sender;
             double current = (double)data;
@@ -170,5 +191,18 @@ namespace Sound_Level_Prediction_Program.Controls
         public static readonly RoutedEvent UpperValueChangedEvent =
             EventManager.RegisterRoutedEvent("UpperValueChanged",
             RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RangeSlider));
+
+        private void Rectangle_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Rectangle rect = (Rectangle)sender;
+            rect.Width = 0.277 * rect.Height;
+            rect.RadiusX = rect.Width / 2;
+        }
+
+        private void AreaBorder_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Border border = (Border)sender;
+            border.Height = this.ThumbHeight / 9.0;
+        }
     }
 }

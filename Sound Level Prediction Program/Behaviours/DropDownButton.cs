@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interactivity;
 
-namespace Sound_Level_Prediction_Program
+namespace SoundLevelCalculator
 {
     public class DropDownButton : Behavior<Button>
     {

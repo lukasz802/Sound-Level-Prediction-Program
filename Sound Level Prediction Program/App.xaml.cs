@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Sound_Level_Prediction_Program
+namespace SoundLevelCalculator
 {
     /// <summary>
     /// Logika interakcji dla klasy App.xaml

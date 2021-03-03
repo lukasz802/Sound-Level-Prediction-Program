@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Sound_Level_Prediction_Program.Controls
+namespace SoundLevelCalculator.Controls
 {
     public class AutoGreyableImage : Image
     {

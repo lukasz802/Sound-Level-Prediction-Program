@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Sound_Level_Prediction_Program
+namespace SoundLevelCalculator
 {
     public class RelayCommand : ICommand
     {
@@ -21,7 +17,8 @@ namespace Sound_Level_Prediction_Program
             _canExecute = canExecute;
         }
 
-        #region ICommand Members 
+        #region ICommand Members
+
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
@@ -41,6 +38,7 @@ namespace Sound_Level_Prediction_Program
         }
 
         public void Execute(object parameter) { _execute(parameter); }
+
         #endregion
     }
 }
